@@ -13,8 +13,6 @@ public class QuadtreeNode {
         this.xMax = 0;
         this.yMin = 0;
         this.yMax = 0;
-        this.placeList = new List<Place>();
-        this.children = new Map<QuadtreeNode, List<Place>>();
     }
 
     public QuadtreeNode(int xMin, int xMax, int yMin, int yMax) {
@@ -57,10 +55,10 @@ public class QuadtreeNode {
         // This is a simplified version, you may need to adjust it based on your requirements
         int midX = (xMin + xMax) / 2;
         int midY = (yMin + yMax) / 2;
-        children.put(QuadtreeNode.NW, new QuadtreeNode(xMin, yMin, midX, midY));
-        children.put(QuadtreeNode.SW, new QuadtreeNode(xMin, midY, midX, yMax));
-        children.put(QuadtreeNode.NE, new QuadtreeNode(midX, yMin, xMax, midY));
-        children.put(QuadtreeNode.SE, new QuadtreeNode(midX, midY, xMax, yMax));
+        children.put(new QuadtreeNode(xMin, yMin, midX, midY), new List<>());
+        children.put(new QuadtreeNode(xMin, midY, midX, yMax), new List<>());
+        children.put(new QuadtreeNode(midX, yMin, xMax, midY), new List<>());
+        children.put(new QuadtreeNode(midX, midY, xMax, yMax), new List<>());
 
         for (Place place : placeList) {
             chooseChild(place.getX(), place.getY()).addPlace(place.getX(), place.getY(), place.getServiceName());
@@ -68,14 +66,12 @@ public class QuadtreeNode {
         placeList.clear();
     }
 
-    public void search(int xMin, int yMin, int xMax, int yMax, String serviceName, CustomList<Place> result) {
-        // Implement your search logic recursively
-        // This is a simplified version, you may need to adjust it based on your requirements
+    public void search(int xMin, int yMin, int xMax, int yMax, String serviceName, List<Place> result) {
         if (this.xMax < xMin || this.xMin > xMax || this.yMax < yMin || this.yMin > yMax) {
             return;
         }
 
-        for (Place place : places) {
+        for (Place place : placeList) {
             if (place.getX() >= xMin && place.getX() <= xMax && place.getY() >= yMin && place.getY() <= yMax
                     && place.getServiceName().equals(serviceName)) {
                 result.add(place);

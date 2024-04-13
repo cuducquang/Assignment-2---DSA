@@ -24,4 +24,13 @@ public class Map<K, V> {
     public int size() {
         return keys.size();
     }
+
+    public V getOrDefault(K key, V defaultValue) {
+        for (int i = 0; i < keys.size(); i++) {
+            if (keys.get(i).equals(key)) {
+                return values.get(i);
+            }
+        }
+        return defaultValue;
+    }
 }
