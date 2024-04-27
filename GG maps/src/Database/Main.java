@@ -8,7 +8,8 @@ public class Main {
         Map2D map = new Map2D(10000000, 10000000, 1000);
         Set<String> types = new HashSet<>();
         types.add("ATM");
-        map.add(5000000, 5000000, types);
+        Place place = new Place(500000, 500000, types);
+        map.add(place);
         map.saveData("places_data.dat");
     }
 }

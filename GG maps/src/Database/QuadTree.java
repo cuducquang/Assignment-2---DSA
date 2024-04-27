@@ -93,6 +93,50 @@ public class QuadTree {
     }
 
 
+    public void remove(Place place) {
+        remove(root, place);
+    }
+
+    private boolean remove(Node node, Place place) {
+        if (node == null) {
+            return false;
+        }
+
+        // Check if the node contains the place
+        if (node.contains(place)) {
+            // If it's a leaf node, remove the place from the node's places set
+            if (node.places != null && node.places.contains(place)) {
+                node.places.remove(place);
+                return true;
+            } else {
+                // Otherwise, recursively remove from children
+                for (int i = 0; i < 4; i++) {
+                    if (remove(node.children[i], place)) {
+                        // If a child node was removed, check if the node needs to be merged
+                        if (shouldMerge(node)) {
+                            merge(node);
+                        }
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean shouldMerge(Node node) {
+        // Implement your logic for deciding whether to merge the node's children
+        // For example, check if the node's children have fewer elements than the capacity
+        // Return true if merging should occur, false otherwise
+        return true;
+    }
+
+    private void merge(Node node) {
+        // Implement the logic for merging the node's children into the parent node
+        return;
+    }
+
+
     private static class Node {
         private final double x;
         private final double y;
