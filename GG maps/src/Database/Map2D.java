@@ -63,6 +63,7 @@ public class Map2D {
         return quadTree.search(x, y, width, height, serviceType, maxResults);
     }
 
+
     public void loadData(String filename) {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
             serviceIndex.clear();

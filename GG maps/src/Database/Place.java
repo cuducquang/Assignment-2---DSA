@@ -1,9 +1,9 @@
 package Database;
 
 import java.util.Set;
+import java.io.Serializable;
 
-
-class Place {
+class Place implements Serializable{
     private final double x;
     private final double y;
     private Set<String> services;
