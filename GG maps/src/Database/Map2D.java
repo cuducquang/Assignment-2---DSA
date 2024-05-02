@@ -1,11 +1,9 @@
 package Database;
 
-import java.io.*;
-import java.util.*;
 
 public class Map2D {
     private QuadTree quadTree;
-    private final HashMap<String, Set<Place>> serviceIndex;
+    private final HashMap<String, HashSet<Place>> serviceIndex;
 
     public Map2D(double width, double height, int capacity) {
         this.serviceIndex = new HashMap<>();
@@ -17,12 +15,15 @@ public class Map2D {
     public void add(Place place) {
         quadTree.insert(place);
         for (String service : place.getServices()) {
-            serviceIndex.putIfAbsent(service, new HashSet<>());
+            // Check if the service already exists in the map
+            serviceIndex.put(service, new HashSet<>());
+            // Add the place to the HashSet associated with the service
             serviceIndex.get(service).add(place);
         }
     }
 
-    public void edit(Place place, Set<String> newServices) {
+
+    public void edit(Place place, HashSet<String> newServices) {
         // Remove the place from serviceIndex
         for (String service : place.getServices()) {
             serviceIndex.get(service).remove(place);

@@ -1,9 +1,5 @@
 package Database;
 
-import java.util.*;
-import java.io.*;
-
-
 public class QuadTree {
     private final int capacity;
     private final Node root;
@@ -48,10 +44,10 @@ public class QuadTree {
         node.children[2] = new Node(x, y + subHeight, subWidth, subHeight, node.depth + 1);
         node.children[3] = new Node(x + subWidth, y + subHeight, subWidth, subHeight, node.depth + 1);
 
-        Set<Place> places = node.places;
+        HashSet<Place> places = node.places;
         node.places = null;
 
-        for (Place place : places) {
+        for (Place place : places.toArray()) {
             for (int i = 0; i < 4; i++) {
                 if (node.children[i].contains(place)) {
                     node.children[i].insert(place);
@@ -61,19 +57,19 @@ public class QuadTree {
         }
     }
 
-    public Set<Place> search(double x, double y, double width, double height, String serviceType, int maxResults) {
-        Set<Place> result = new HashSet<>();
+    public HashSet<Place> search(double x, double y, double width, double height, String serviceType, int maxResults) {
+        HashSet<Place> result = new HashSet<>();
         search(root, x, y, width, height, serviceType, result, maxResults);
         return result;
     }
 
-    private void search(Node node, double x, double y, double width, double height, String serviceType, Set<Place> result, int maxResults) {
+    private void search(Node node, double x, double y, double width, double height, String serviceType, HashSet<Place> result, int maxResults) {
         if (node == null) {
             return;
         }
 
         if (node.places != null) {
-            for (Place place : node.places) {
+            for (Place place : node.places.toArray()) {
                 if (place.getX() >= x && place.getX() < x + width && place.getY() >= y && place.getY() < y + height) {
                     if (place.getServices().contains(serviceType)) {
                         result.add(place);
@@ -143,7 +139,7 @@ public class QuadTree {
         private final double width;
         private final double height;
         private final int depth;
-        private Set<Place> places;
+        private HashSet<Place> places;
         private Node[] children;
 
         public Node(double x, double y, double width, double height, int depth) {

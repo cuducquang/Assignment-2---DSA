@@ -6,9 +6,9 @@ import java.io.Serializable;
 class Place implements Serializable{
     private final double x;
     private final double y;
-    private Set<String> services;
+    private HashSet<String> services;
 
-    public Place(double x, double y, Set<String> services) {
+    public Place(double x, double y, HashSet<String> services) {
         this.x = x;
         this.y = y;
         this.services = services;
@@ -22,11 +22,11 @@ class Place implements Serializable{
         return y;
     }
 
-    public Set<String> getServices() {
+    public HashSet<String> getServices() {
         return services;
     }
 
-    public void setServices(Set<String> services) {
+    public void setServices(HashSet<String> services) {
         this.services = services;
     }
 
