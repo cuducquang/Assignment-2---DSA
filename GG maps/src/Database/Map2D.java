@@ -97,18 +97,35 @@ public class Map2D {
     public void loadData(String filename) {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
             serviceIndex.clear();
-            serviceIndex.putAll((HashMap<String, Set<Place>>) in.readObject());
+            HashMap<String, Set<Place>> data = (HashMap<String, Set<Place>>) in.readObject();
+            Iterator<HashMap.Entry<String, Set<Place>>> iterator = data.entrySet().iterator();
+            while (iterator.hasNext()) {
+                HashMap.Entry<String, Set<Place>> entry = iterator.next();
+                String key = entry.getKey();
+                Set<Place> places = entry.getValue();
+                serviceIndex.put(key, places);
+            }
+        } catch (EOFException eofException) {
+            // Handle EOFException separately
+            System.err.println("Unexpected end of file: " + filename);
+            eofException.printStackTrace();
         } catch (IOException | ClassNotFoundException e) {
+            // Handle other exceptions
             e.printStackTrace();
         }
     }
 
+
+
     public void saveData(String filename) {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
             out.writeObject(serviceIndex);
+            System.out.println("Data saved successfully to: " + filename);
         } catch (IOException e) {
+            System.err.println("Error saving data to file: " + filename);
             e.printStackTrace();
         }
     }
+
 
 }

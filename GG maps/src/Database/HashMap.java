@@ -1,8 +1,9 @@
 package Database;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-class HashMap<K, V> {
+class HashMap<K, V> implements Serializable {
     private static final int CAPACITY = 16;
     private Entry<K, V>[] table;
     private int size;
@@ -95,12 +96,29 @@ class HashMap<K, V> {
         size = 0;
     }
 
-    public void putAll(HashMap<? extends K, ? extends V> map) {
-        Iterator<? extends Entry<? extends K, ? extends V>> iterator = map.iterator();
-        while (iterator.hasNext()) {
-            Entry<? extends K, ? extends V> entry = iterator.next();
-            put(entry.getKey(), entry.getValue());
+    public Set<Entry<K, V>> entrySet() {
+        Set<Entry<K, V>> entrySet = new Set<>();
+        for (Entry<K, V> entry : table) {
+            while (entry != null) {
+                entrySet.add(entry);
+                entry = entry.next;
+            }
         }
+        return entrySet;
+    }
+
+    public void addSetItem(K key, V value) {
+        if (key == null)
+            return; // Null keys not supported
+        int index = getIndex(key);
+        Entry<K, V> entry = table[index];
+        while (entry != null) {
+            if (entry.key.equals(key)) {
+
+            }
+            entry = entry.next;
+        }
+        return;
     }
 
 
@@ -148,7 +166,7 @@ class HashMap<K, V> {
         };
     }
 
-    public static class Entry<K, V> {
+    public static class Entry<K, V> implements Serializable{
         K key;
         V value;
         Entry<K, V> next;

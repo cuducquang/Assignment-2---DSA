@@ -1,17 +1,17 @@
 package Database;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-class Set<E> {
+class Set<E> implements Serializable {
     private HashMap<E, Object> map;
-    private static final Object PRESENT = new Object();
 
     public Set() {
         map = new HashMap<>();
     }
 
     public void add(E element) {
-        map.put(element, PRESENT);
+        map.put(element, null);
     }
 
     public boolean contains(E element) {
