@@ -17,28 +17,32 @@ class HashMap<K, V> implements Serializable {
     public void put(K key, V value) {
         if (key == null)
             return; // Null keys not supported
-        int index = getIndex(key);
+        int index = Math.abs(getIndex(key));
         if (table[index] == null) {
             table[index] = new Entry<>(key, value);
             size++;
         } else {
             Entry<K, V> entry = table[index];
-            while (entry.next != null) {
+            while (entry != null) {
                 if (entry.key.equals(key)) {
                     entry.value = value;
                     return;
+                }
+                if (entry.next == null) {
+                    break;
                 }
                 entry = entry.next;
             }
             entry.next = new Entry<>(key, value);
             size++;
         }
+
     }
 
     public V get(K key) {
         if (key == null)
             return null; // Null keys not supported
-        int index = getIndex(key);
+        int index = Math.abs(getIndex(key));
         Entry<K, V> entry = table[index];
         while (entry != null) {
             if (entry.key.equals(key)) {

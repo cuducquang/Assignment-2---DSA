@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-class Set<E> implements Serializable {
+public class Set<E> implements Serializable {
     private HashMap<E, Object> map;
 
     public Set() {

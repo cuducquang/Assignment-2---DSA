@@ -1,18 +1,18 @@
 package Database.SystemMenu;
 
-import Database.Map2D;
-import Database.Place;
+import Database.*;
 import java.util.Scanner;
+import java.util.Random;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Iterator;
 
 public class SystemMenu {
     int mapWidth = 10000000;
     int mapHeight = 10000000;
-//    int numberOfPlaces = 1000;
+    int numberOfPlaces = 1000;
     int capacity = 100;
 
     Map2D map = new Map2D(mapWidth, mapHeight, capacity);
@@ -35,7 +35,7 @@ public class SystemMenu {
 //            double x = rand.nextDouble() * mapWidth;
 //            double y = rand.nextDouble() * mapHeight;
 //            int numberOfServices = rand.nextInt(5) + 1;
-//            Set<String> services = new HashSet<>();
+//            Set<String> services = new Set<>();
 //            for (int j = 0; j < numberOfServices; j++) {
 //                int randomIndex = rand.nextInt(serviceTypes.size());
 //                services.add(serviceTypes.get(randomIndex));
@@ -97,7 +97,10 @@ public class SystemMenu {
             System.out.println("You can select up to 5 service types. Please try again.");
             return;
         }
-        Set<String> services = new HashSet<>(Arrays.asList(selectedServices));
+        Set<String> services = new Set<>();
+        for (String service : selectedServices) {
+            services.add(service);
+        }
 
         Place place = new Place(x, y, services);
         map.add(place);
@@ -142,7 +145,10 @@ public class SystemMenu {
         String serviceType = sc.nextLine();
         Set<Place> results = map.search(0, 0, mapWidth, mapHeight, serviceType, 50);
         int index = 1;
-        for (Place place : results) {
+
+        Iterator<Place> iterator = results.iterator();
+        while (iterator.hasNext()) {
+            Place place = iterator.next();
             System.out.println("Place " + index + ": " + place.toString());
             index++;
         }
