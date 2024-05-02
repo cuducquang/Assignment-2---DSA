@@ -4,9 +4,6 @@ import Database.*;
 import java.util.Scanner;
 import java.util.Random;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.HashSet;
 import java.util.Iterator;
 
 public class SystemMenu {
@@ -87,8 +84,8 @@ public class SystemMenu {
         System.out.println("Enter the service types of the place (up to 5 types, separated by commas): ");
         System.out.println("Available service types:");
         List<String> serviceTypes = Arrays.asList("ATM", "Restaurant", "Hospital", "Gas Station", "Coffee Shop", "Pharmacy", "Park", "School", "Supermarket", "Library");
-        for (String service : serviceTypes) {
-            System.out.println(service);
+        for (int i = 0; i < serviceTypes.size(); i++) {
+            System.out.println(serviceTypes.get(i));
         }
         String input = scanner.nextLine();
         String[] selectedServices = input.split(",\\s*");
