@@ -1,6 +1,5 @@
 package Database;
 
-import java.util.Set;
 import java.io.Serializable;
 
 class Place implements Serializable{

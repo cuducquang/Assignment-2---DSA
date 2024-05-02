@@ -1,7 +1,7 @@
 package Database;
 
 import java.io.*;
-import java.util.*;
+import java.util.Iterator;
 
 public class Map2D {
     private QuadTree quadTree;
@@ -16,39 +16,68 @@ public class Map2D {
 
     public void add(Place place) {
         quadTree.insert(place);
-        for (String service : place.getServices()) {
-            serviceIndex.putIfAbsent(service, new HashSet<>());
+        Set<String> services = place.getServices();
+        Iterator<String> serviceIterator = services.iterator();
+        while (serviceIterator.hasNext()) {
+            String service = serviceIterator.next();
+            if (!serviceIndex.containsKey(service)) {
+                serviceIndex.put(service, new Set<>());
+            }
             serviceIndex.get(service).add(place);
         }
     }
 
     public void edit(Place place, Set<String> newServices) {
         // Remove the place from serviceIndex
-        for (String service : place.getServices()) {
-            serviceIndex.get(service).remove(place);
+        Iterator<String> serviceIterator = place.getServices().iterator();
+        while (serviceIterator.hasNext()) {
+            String service = serviceIterator.next();
+            Iterator<Place> iterator = serviceIndex.get(service).iterator();
+            while (iterator.hasNext()) {
+                Place currentPlace = iterator.next();
+                if (currentPlace.equals(place)) {
+                    iterator.remove();
+                    break; // No need to continue iterating
+                }
+            }
         }
 
         // Update the place with new services
         place.setServices(newServices);
 
         // Add the place back to serviceIndex
-        for (String service : place.getServices()) {
-            serviceIndex.putIfAbsent(service, new HashSet<>());
+        while (serviceIterator.hasNext()) {
+            String service = serviceIterator.next();
+            if (!serviceIndex.containsKey(service)) {
+                serviceIndex.put(service, new Set<>());
+            }
             serviceIndex.get(service).add(place);
         }
+
     }
 
     public void remove(Place place) {
         quadTree.remove(place);
-        for (String service : place.getServices()) {
-            serviceIndex.get(service).remove(place);
+        Iterator<String> serviceIterator = place.getServices().iterator();
+        while (serviceIterator.hasNext()) {
+            String service = serviceIterator.next();
+            Iterator<Place> iterator = serviceIndex.get(service).iterator();
+            while (iterator.hasNext()) {
+                Place currentPlace = iterator.next();
+                if (currentPlace.equals(place)) {
+                    iterator.remove();
+                    break; // No need to continue iterating
+                }
+            }
         }
     }
 
     public Set<Place> search(double x, double y, double width, double height, String serviceType, int maxResults) {
-        Set<Place> result = new HashSet<>();
-        Set<Place> places = serviceIndex.getOrDefault(serviceType, new HashSet<>());
-        for (Place place : places) {
+        Set<Place> result = new Set<>();
+        Set<Place> places = serviceIndex.getOrDefault(serviceType, new Set<>());
+        Iterator<Place> iterator = places.iterator();
+        while (iterator.hasNext()) {
+            Place place = iterator.next();
             if (place.getX() >= x && place.getX() < x + width && place.getY() >= y && place.getY() < y + height) {
                 result.add(place);
                 if (result.size() == maxResults) {
@@ -56,6 +85,7 @@ public class Map2D {
                 }
             }
         }
+
         return result;
     }
 

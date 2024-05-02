@@ -71,7 +71,9 @@ public class Main {
 //        map.saveData("places_data.dat");
         map.loadData("places_data.dat");
         Set<Place> results = map.search(500000, 500000, 10000, 10000, "ATM", 5);
-        for (Place result : results) {
+        Iterator<Place> iterator = results.iterator();
+        while (iterator.hasNext()) {
+            Place result = iterator.next();
             System.out.println(result.toString());
         }
     }
