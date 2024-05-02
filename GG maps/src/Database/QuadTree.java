@@ -129,15 +129,18 @@ public class QuadTree {
     }
 
     private boolean shouldMerge(Node node) {
-        // Implement your logic for deciding whether to merge the node's children
-        // For example, check if the node's children have fewer elements than the capacity
-        // Return true if merging should occur, false otherwise
+        for (int i = 0; i < 4; i++) {
+            if(node.children[i].places.size() != 0) {
+                return false;
+            }
+        }
         return true;
     }
 
     private void merge(Node node) {
-        // Implement the logic for merging the node's children into the parent node
-        return;
+        for (int i = 0; i < 4; i++) {
+            node.children[i] = null;
+        }
     }
 
 
