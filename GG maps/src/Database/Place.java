@@ -1,7 +1,8 @@
 package Database;
 
-import java.io.Serial;
 import java.io.Serializable;
+import java.util.Iterator;
+
 
 import java.util.Set;
 
@@ -34,12 +35,25 @@ public class Place implements Serializable{
         this.services = services;
     }
 
+    private String servicesToString() {
+        StringBuilder sb = new StringBuilder("[");
+        Iterator<String> iterator = services.iterator();
+        while (iterator.hasNext()) {
+            sb.append(iterator.next());
+            if (iterator.hasNext()) {
+                sb.append(", ");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
     @Override
     public String toString() {
         return "Place{" +
                 "x=" + x +
                 ", y=" + y +
-                ", services=" + services +
+                ", services=" + servicesToString() +
                 '}';
     }
 }
