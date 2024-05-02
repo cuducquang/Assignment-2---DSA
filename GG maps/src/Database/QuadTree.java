@@ -1,7 +1,7 @@
 package Database;
 
-import java.util.*;
-import java.io.*;
+import java.util.Set;
+import java.util.HashSet;
 
 
 public class QuadTree {

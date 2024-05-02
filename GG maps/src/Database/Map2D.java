@@ -1,7 +1,10 @@
 package Database;
 
 import java.io.*;
-import java.util.*;
+
+import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
 
 public class Map2D {
     private QuadTree quadTree;
@@ -68,6 +71,7 @@ public class Map2D {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
             serviceIndex.clear();
             serviceIndex.putAll((HashMap<String, Set<Place>>) in.readObject());
+            System.out.println("load data successfully");
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -76,6 +80,7 @@ public class Map2D {
     public void saveData(String filename) {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
             out.writeObject(serviceIndex);
+            System.out.println("save data successfully");
         } catch (IOException e) {
             e.printStackTrace();
         }

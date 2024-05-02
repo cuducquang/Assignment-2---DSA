@@ -1,9 +1,13 @@
 package Database;
 
-import java.util.Set;
+import java.io.Serial;
 import java.io.Serializable;
 
-class Place implements Serializable{
+import java.util.Set;
+
+public class Place implements Serializable{
+    @Serial
+    private static final long serialVersionUID = 2039612322674750625L;
     private final double x;
     private final double y;
     private Set<String> services;
