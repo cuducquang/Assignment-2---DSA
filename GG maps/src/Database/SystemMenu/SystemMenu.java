@@ -143,7 +143,7 @@ public class SystemMenu {
         Set<Place> results = map.search(0, 0, mapWidth, mapHeight, serviceType, 50);
         int index = 1;
         for (Place place : results) {
-            System.out.println("Number: " + index + " Place at (" + place.getX() + ", " + place.getY() + ") with services: " + place.getServices());
+            System.out.println("Place " + index + ": " + place.toString());
             index++;
         }
     }
