@@ -1,7 +1,6 @@
 package Database;
+import java.util.Iterator;
 
-import java.util.*;
-import java.io.*;
 
 
 public class QuadTree {
@@ -51,7 +50,9 @@ public class QuadTree {
         Set<Place> places = node.places;
         node.places = null;
 
-        for (Place place : places) {
+        Iterator<Place> placeIterator = places.iterator();
+        while (placeIterator.hasNext()) {
+            Place place = placeIterator.next();
             for (int i = 0; i < 4; i++) {
                 if (node.children[i].contains(place)) {
                     node.children[i].insert(place);
@@ -62,7 +63,7 @@ public class QuadTree {
     }
 
     public Set<Place> search(double x, double y, double width, double height, String serviceType, int maxResults) {
-        Set<Place> result = new HashSet<>();
+        Set<Place> result = new Set<>();
         search(root, x, y, width, height, serviceType, result, maxResults);
         return result;
     }
@@ -73,7 +74,9 @@ public class QuadTree {
         }
 
         if (node.places != null) {
-            for (Place place : node.places) {
+            Iterator<Place> placeIterator = node.places.iterator();
+            while (placeIterator.hasNext()) {
+                Place place = placeIterator.next();
                 if (place.getX() >= x && place.getX() < x + width && place.getY() >= y && place.getY() < y + height) {
                     if (place.getServices().contains(serviceType)) {
                         result.add(place);
@@ -83,6 +86,7 @@ public class QuadTree {
                     }
                 }
             }
+
         } else {
             for (int i = 0; i < 4; i++) {
                 if (node.children[i].intersects(x, y, width, height)) {
@@ -152,7 +156,7 @@ public class QuadTree {
             this.width = width;
             this.height = height;
             this.depth = depth;
-            this.places = new HashSet<>();
+            this.places = new Set<>();
             this.children = new Node[4];
         }
 

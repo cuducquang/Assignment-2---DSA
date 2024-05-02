@@ -64,14 +64,16 @@ public class Main {
     public static void main(String[] args) {
 
         Map2D map = new Map2D(10000000, 10000000, 1000);
-//        Set<String> types = new HashSet<>();
+//        Set<String> types = new Set<>();
 //        types.add("ATM");
 //        Place place = new Place(500000, 500000, types);
 //        map.add(place);
 //        map.saveData("places_data.dat");
         map.loadData("places_data.dat");
         Set<Place> results = map.search(500000, 500000, 10000, 10000, "ATM", 5);
-        for (Place result : results) {
+        Iterator<Place> iterator = results.iterator();
+        while (iterator.hasNext()) {
+            Place result = iterator.next();
             System.out.println(result.toString());
         }
     }
