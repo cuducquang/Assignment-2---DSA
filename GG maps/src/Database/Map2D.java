@@ -1,5 +1,9 @@
 package Database;
 
+import Database.DataStructure.HashMap;
+import Database.DataStructure.QuadTree;
+import Database.DataStructure.Set;
+
 import java.io.*;
 import java.util.Iterator;
 

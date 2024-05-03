@@ -1,4 +1,6 @@
-package Database;
+package Database.DataStructure;
+import Database.Place;
+
 import java.util.Iterator;
 
 

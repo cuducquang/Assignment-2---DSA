@@ -1,4 +1,4 @@
-package Database;
+package Database.DataStructure;
 
 public class List<T> {
     private Object[] elements;

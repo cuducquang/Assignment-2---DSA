@@ -1,9 +1,10 @@
-package Database;
+package Database.DataStructure;
+
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-class HashMap<K, V> implements Serializable {
+public class HashMap<K, V> implements Serializable {
     private static final int CAPACITY = 16;
     private Entry<K, V>[] table;
     private int size;

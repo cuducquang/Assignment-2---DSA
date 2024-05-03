@@ -1,5 +1,7 @@
 package Database;
 
+import Database.DataStructure.Set;
+
 import java.io.Serializable;
 import java.util.Iterator;
 import java.io.Serial;
@@ -10,11 +12,13 @@ public class Place implements Serializable{
     private static final long serialVersionUID = 2039612322674750625L;
     private final double x;
     private final double y;
+    private String placeName;
     private Set<String> services;
 
-    public Place(double x, double y, Set<String> services) {
+    public Place(double x, double y, String placeName, Set<String> services) {
         this.x = x;
         this.y = y;
+        this.placeName = placeName;
         this.services = services;
     }
 
@@ -26,12 +30,20 @@ public class Place implements Serializable{
         return y;
     }
 
+    public String getPlaceName() {
+        return placeName;
+    }
+
     public Set<String> getServices() {
         return services;
     }
 
     public void setServices(Set<String> services) {
         this.services = services;
+    }
+
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
     }
 
     private String servicesToString() {
@@ -52,7 +64,8 @@ public class Place implements Serializable{
         return "Place{" +
                 "x=" + x +
                 ", y=" + y +
-                ", services=" + servicesToString() +
+                ", placeName='" + placeName + '\'' +
+                ", services=" + services +
                 '}';
     }
 }

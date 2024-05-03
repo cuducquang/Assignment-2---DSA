@@ -1,8 +1,12 @@
 package Database.SystemMenu;
 
 import Database.*;
-import java.util.Scanner;
+import Database.DataStructure.Arrays;
+import Database.DataStructure.List;
+import Database.DataStructure.Set;
+
 import java.util.Random;
+import java.util.Scanner;
 
 import java.util.Iterator;
 
@@ -27,7 +31,7 @@ public class SystemMenu {
     public void start() {
 //        List<String> serviceTypes = Arrays.asList("ATM", "Restaurant", "Hospital", "Gas Station", "Coffee Shop", "Pharmacy", "Park", "School", "Supermarket", "Library");
 //        Random rand = new Random();
-//
+//        String placeName = "RMIT";
 //        for (int i = 0; i < numberOfPlaces; i++) {
 //            double x = rand.nextDouble() * mapWidth;
 //            double y = rand.nextDouble() * mapHeight;
@@ -38,7 +42,7 @@ public class SystemMenu {
 //                services.add(serviceTypes.get(randomIndex));
 //            }
 //
-//            Place place = new Place(x, y, services);
+//            Place place = new Place(x, y, placeName, services);
 //
 //            map.add(place);
 //        }
@@ -57,7 +61,7 @@ public class SystemMenu {
                     addPlace(scanner);
                     break;
                 case 2:
-//                    editPlace();
+                    editPlace(scanner);
                     break;
                 case 3:
 //                    removePlace();
@@ -81,6 +85,8 @@ public class SystemMenu {
         System.out.println("Enter the coordinate (Y) of the place: ");
         double y = scanner.nextDouble();
         scanner.nextLine();
+        System.out.println("Enter the name of the place: ");
+        String placeName = scanner.nextLine();
         System.out.println("Enter the service types of the place (up to 5 types, separated by commas): ");
         System.out.println("Available service types:");
         List<String> serviceTypes = Arrays.asList("ATM", "Restaurant", "Hospital", "Gas Station", "Coffee Shop", "Pharmacy", "Park", "School", "Supermarket", "Library");
@@ -99,9 +105,13 @@ public class SystemMenu {
             services.add(service);
         }
 
-        Place place = new Place(x, y, services);
+        Place place = new Place(x, y, placeName, services);
         map.add(place);
         map.saveData("places_data.dat");
+    }
+
+    public void editPlace(Scanner scanner) {
+
     }
 
     public void searchPlace() {
