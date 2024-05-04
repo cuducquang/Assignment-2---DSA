@@ -74,4 +74,11 @@ public class Place implements Serializable{
     public int getId() {
         return placeId;
     }
+
+    public int compareTo(Place other) {
+        if (this.x != other.x)
+            return Double.compare(this.x, other.x);
+        else
+            return Double.compare(this.y, other.y);
+    }
 }
