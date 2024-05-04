@@ -29,25 +29,25 @@ public class SystemMenu {
     }
 
     public void start() {
-//        List<String> serviceTypes = Arrays.asList("ATM", "Restaurant", "Hospital", "Gas Station", "Coffee Shop", "Pharmacy", "Park", "School", "Supermarket", "Library");
-//        Random rand = new Random();
-//        String placeName = "RMIT";
-//        for (int i = 0; i < numberOfPlaces; i++) {
-//            double x = rand.nextDouble() * mapWidth;
-//            double y = rand.nextDouble() * mapHeight;
-//            int numberOfServices = rand.nextInt(5) + 1;
-//            Set<String> services = new Set<>();
-//            for (int j = 0; j < numberOfServices; j++) {
-//                int randomIndex = rand.nextInt(serviceTypes.size());
-//                services.add(serviceTypes.get(randomIndex));
-//            }
-//
-//            Place place = new Place(x, y, placeName, services);
-//
-//            map.add(place);
-//        }
-//        map.saveData("places_data.dat");
-        map.loadData("places_data.dat");
+        List<String> serviceTypes = Arrays.asList("ATM", "Restaurant", "Hospital", "Gas Station", "Coffee Shop", "Pharmacy", "Park", "School", "Supermarket", "Library");
+        Random rand = new Random();
+        for (int i = 0; i < numberOfPlaces; i++) {
+            int placeId = i + 1;
+            double x = rand.nextDouble() * mapWidth;
+            double y = rand.nextDouble() * mapHeight;
+            int numberOfServices = rand.nextInt(5) + 1;
+            Set<String> services = new Set<>();
+            for (int j = 0; j < numberOfServices; j++) {
+                int randomIndex = rand.nextInt(serviceTypes.size());
+                services.add(serviceTypes.get(randomIndex));
+            }
+
+            Place place = new Place(x, y, placeId, services);
+
+            map.add(place);
+        }
+        map.saveData("places_data.dat");
+//        map.loadData("places_data.dat");
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
 
