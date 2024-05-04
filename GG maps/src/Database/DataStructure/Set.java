@@ -1,10 +1,13 @@
 package Database.DataStructure;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Set<E> implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -1453405297204316207L;
     private HashMap<E, Object> map;
 
     public Set() {
@@ -27,6 +30,21 @@ public class Set<E> implements Serializable {
         return map.size();
     }
 
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        Iterator<E> iterator = iterator();
+        while (iterator.hasNext()) {
+            sb.append(iterator.next());
+            if (iterator.hasNext()) {
+                sb.append(", ");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
     public Iterator<E> iterator() {
         return new Iterator<E>() {
             private Iterator<HashMap.Entry<E, Object>> mapIterator = map.iterator();
@@ -49,5 +67,7 @@ public class Set<E> implements Serializable {
             }
         };
     }
+
+
 }
 

@@ -2,11 +2,15 @@ package Database.DataStructure;
 
 import Database.Place;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class HashMap<K, V> implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -1969132081001806847L;
     private static final int CAPACITY = 16;
     private Entry<K, V>[] table;
     private int size;
@@ -114,19 +118,6 @@ public class HashMap<K, V> implements Serializable {
         return entrySet;
     }
 
-    public void addSetItem(K key, V value) {
-        if (key == null)
-            return; // Null keys not supported
-        int index = getIndex(key);
-        Entry<K, V> entry = table[index];
-        while (entry != null) {
-            if (entry.key.equals(key)) {
-
-            }
-            entry = entry.next;
-        }
-        return;
-    }
 
     public Set<V> values() {
         Set<V> values = new Set<>();

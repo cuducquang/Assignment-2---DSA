@@ -67,7 +67,7 @@ public class Place implements Serializable{
                 "x=" + x +
                 ", y=" + y +
                 ", placeName='" + placeName + '\'' +
-                ", services=" + services +
+                ", services=" + services.toString() +
                 '}';
     }
 

@@ -29,25 +29,25 @@ public class SystemMenu {
     }
 
     public void start() {
-        List<String> serviceTypes = Arrays.asList("ATM", "Restaurant", "Hospital", "Gas Station", "Coffee Shop", "Pharmacy", "Park", "School", "Supermarket", "Library");
-        Random rand = new Random();
-        for (int i = 0; i < numberOfPlaces; i++) {
-            int placeId = i + 1;
-            double x = rand.nextDouble() * mapWidth;
-            double y = rand.nextDouble() * mapHeight;
-            int numberOfServices = rand.nextInt(5) + 1;
-            Set<String> services = new Set<>();
-            for (int j = 0; j < numberOfServices; j++) {
-                int randomIndex = rand.nextInt(serviceTypes.size());
-                services.add(serviceTypes.get(randomIndex));
-            }
-
-            Place place = new Place(x, y, placeId, services);
-
-            map.add(place);
-        }
-        map.saveData("places_data.dat");
-//        map.loadData("places_data.dat");
+//        List<String> serviceTypes = Arrays.asList("ATM", "Restaurant", "Hospital", "Gas Station", "Coffee Shop", "Pharmacy", "Park", "School", "Supermarket", "Library");
+//        Random rand = new Random();
+//        for (int i = 0; i < numberOfPlaces; i++) {
+//            int placeId = i + 1;
+//            double x = rand.nextDouble() * mapWidth;
+//            double y = rand.nextDouble() * mapHeight;
+//            int numberOfServices = rand.nextInt(5) + 1;
+//            Set<String> services = new Set<>();
+//            for (int j = 0; j < numberOfServices; j++) {
+//                int randomIndex = rand.nextInt(serviceTypes.size());
+//                services.add(serviceTypes.get(randomIndex));
+//            }
+//
+//            Place place = new Place(x, y, placeId, services);
+//
+//            map.add(place);
+//        }
+//        map.saveData("places_data.dat");
+//        map.loadData();
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
 
@@ -128,7 +128,7 @@ public class SystemMenu {
 
             switch (choice) {
                 case 1:
-//                    searchByPlaceName();
+//                  searchByPlaceName();
                     break;
                 case 2:
                     searchByServiceType(sc);
@@ -149,6 +149,7 @@ public class SystemMenu {
     public void searchByServiceType(Scanner sc) {
         System.out.println("Enter the service type you want to search: ");
         String serviceType = sc.nextLine();
+        map.loadPlacesForService(serviceType);
         Set<Place> results = map.search(0, 0, mapWidth, mapHeight, serviceType, 50);
         int index = 1;
 

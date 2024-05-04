@@ -11,6 +11,8 @@ public class Map2D {
     private QuadTree quadTree;
     private final HashMap<String, Set<Place>> serviceIndex;
 
+    private final String filename = "places_data.dat";
+
     public Map2D(double width, double height, int capacity) {
         this.serviceIndex = new HashMap<>();
         this.quadTree = new QuadTree(0, 0, width, height, capacity);
@@ -114,7 +116,8 @@ public class Map2D {
 
 
 
-    public void loadData(String filename) {
+    // Load all data
+    public void loadData() {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
             serviceIndex.clear();
             HashMap<String, Set<Place>> data = (HashMap<String, Set<Place>>) in.readObject();
@@ -134,6 +137,43 @@ public class Map2D {
             e.printStackTrace();
         }
     }
+
+    // Load all places containing a service
+    public void loadPlacesForService(String service) {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+            HashMap<String, Set<Place>> data = (HashMap<String, Set<Place>>) in.readObject();
+            Set<Place> values = data.getOrDefault(service, new Set<>());
+            serviceIndex.put(service, values);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Load services of a place
+    public void loadServicesForPlace(int placeId) {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+            HashMap<String, Set<Place>> data = (HashMap<String, Set<Place>>) in.readObject();
+            Iterator<Set<Place>> iterator = data.values().iterator();
+            while (iterator.hasNext()) {
+                Set<Place> places = iterator.next();
+                Iterator<Place> placeIterator = places.iterator();
+                while (placeIterator.hasNext()) {
+                    Place place = placeIterator.next();
+                    if (place.getId() == placeId) {
+                        Iterator<String> serviceIterator = place.getServices().iterator();
+                        while (serviceIterator.hasNext()) {
+                            String service = serviceIterator.next();
+                            serviceIndex.put(service, new Set<Place>());
+                            serviceIndex.get(service).add(place);
+                        }
+                    }
+                }
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 
