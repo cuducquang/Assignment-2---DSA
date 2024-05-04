@@ -13,13 +13,15 @@ public class Place implements Serializable{
     private final double x;
     private final double y;
     private String placeName;
+    private int placeId;
     private Set<String> services;
 
-    public Place(double x, double y, String placeName, Set<String> services) {
+    public Place(double x, double y, int placeId, Set<String> services) {
         this.x = x;
         this.y = y;
-        this.placeName = placeName;
+        this.placeId =placeId;
         this.services = services;
+        this.placeName = null;
     }
 
     public double getX() {
@@ -67,5 +69,9 @@ public class Place implements Serializable{
                 ", placeName='" + placeName + '\'' +
                 ", services=" + services +
                 '}';
+    }
+
+    public int getId() {
+        return placeId;
     }
 }

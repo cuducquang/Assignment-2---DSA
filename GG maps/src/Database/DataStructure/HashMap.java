@@ -1,5 +1,7 @@
 package Database.DataStructure;
 
+import Database.Place;
+
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -126,7 +128,16 @@ public class HashMap<K, V> implements Serializable {
         return;
     }
 
-
+    public Set<V> values() {
+        Set<V> values = new Set<>();
+        for (Entry<K, V> entry : table) {
+            while (entry != null) {
+                values.add(entry.value);
+                entry = entry.next;
+            }
+        }
+        return values;
+    }
 
     public Iterator<Entry<K, V>> iterator() {
         return new Iterator<Entry<K, V>>() {
@@ -170,6 +181,8 @@ public class HashMap<K, V> implements Serializable {
             }
         };
     }
+
+
 
     public static class Entry<K, V> implements Serializable{
         K key;

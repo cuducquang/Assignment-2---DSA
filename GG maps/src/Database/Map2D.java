@@ -97,6 +97,22 @@ public class Map2D {
         return quadTree.search(x, y, width, height, serviceType, maxResults);
     }
 
+    public int getHighestPlaceId() {
+        int highestPlaceId = 0;
+        Iterator<Set<Place>> setIterator = serviceIndex.values().iterator();
+        while (setIterator.hasNext()) {
+            Iterator<Place> placeIterator = setIterator.next().iterator();
+            while (placeIterator.hasNext()) {
+                int currentPlaceId = placeIterator.next().getId(); // Assuming Place has an ID attribute
+                if (currentPlaceId > highestPlaceId) {
+                    highestPlaceId = currentPlaceId;
+                }
+            }
+        }
+        return highestPlaceId;
+    }
+
+
 
     public void loadData(String filename) {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {

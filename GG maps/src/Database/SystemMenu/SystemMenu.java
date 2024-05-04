@@ -80,13 +80,12 @@ public class SystemMenu {
     }
 
     public void addPlace(Scanner scanner) {
+        int placeId = map.getHighestPlaceId() + 1;
         System.out.println("Enter the coordinate (X) of the place: ");
         double x = scanner.nextDouble();
         System.out.println("Enter the coordinate (Y) of the place: ");
         double y = scanner.nextDouble();
         scanner.nextLine();
-        System.out.println("Enter the name of the place: ");
-        String placeName = scanner.nextLine();
         System.out.println("Enter the service types of the place (up to 5 types, separated by commas): ");
         System.out.println("Available service types:");
         List<String> serviceTypes = Arrays.asList("ATM", "Restaurant", "Hospital", "Gas Station", "Coffee Shop", "Pharmacy", "Park", "School", "Supermarket", "Library");
@@ -105,7 +104,7 @@ public class SystemMenu {
             services.add(service);
         }
 
-        Place place = new Place(x, y, placeName, services);
+        Place place = new Place(x, y, placeId, services);
         map.add(place);
         map.saveData("places_data.dat");
     }
