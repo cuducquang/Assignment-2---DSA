@@ -22,60 +22,18 @@ public class Map2D {
 
     public void add(Place place) {
         quadTree.insert(place);
-        Set<String> services = place.getServices();
-        Iterator<String> serviceIterator = services.iterator();
-        while (serviceIterator.hasNext()) {
-            String service = serviceIterator.next();
-            if (!serviceIndex.containsKey(service)) {
-                serviceIndex.put(service, new Set<>());
-            }
-            serviceIndex.get(service).add(place);
-        }
     }
 
     public void edit(Place place, Set<String> newServices) {
-        // Remove the place from serviceIndex
-        Iterator<String> serviceIterator = place.getServices().iterator();
-        while (serviceIterator.hasNext()) {
-            String service = serviceIterator.next();
-            Iterator<Place> iterator = serviceIndex.get(service).iterator();
-            while (iterator.hasNext()) {
-                Place currentPlace = iterator.next();
-                if (currentPlace.equals(place)) {
-                    iterator.remove();
-                    break; // No need to continue iterating
-                }
-            }
-        }
-
+        quadTree.remove(place);
         // Update the place with new services
         place.setServices(newServices);
-
-        // Add the place back to serviceIndex
-        while (serviceIterator.hasNext()) {
-            String service = serviceIterator.next();
-            if (!serviceIndex.containsKey(service)) {
-                serviceIndex.put(service, new Set<>());
-            }
-            serviceIndex.get(service).add(place);
-        }
-
+        // Add the place back to quadTree
+        quadTree.insert(place);
     }
 
     public void remove(Place place) {
         quadTree.remove(place);
-        Iterator<String> serviceIterator = place.getServices().iterator();
-        while (serviceIterator.hasNext()) {
-            String service = serviceIterator.next();
-            Iterator<Place> iterator = serviceIndex.get(service).iterator();
-            while (iterator.hasNext()) {
-                Place currentPlace = iterator.next();
-                if (currentPlace.equals(place)) {
-                    iterator.remove();
-                    break; // No need to continue iterating
-                }
-            }
-        }
     }
 
     public Set<Place> search(double x, double y, double width, double height, String serviceType, int maxResults) {
@@ -101,14 +59,11 @@ public class Map2D {
 
     public int getHighestPlaceId() {
         int highestPlaceId = 0;
-        Iterator<Set<Place>> setIterator = serviceIndex.values().iterator();
-        while (setIterator.hasNext()) {
-            Iterator<Place> placeIterator = setIterator.next().iterator();
-            while (placeIterator.hasNext()) {
-                int currentPlaceId = placeIterator.next().getId(); // Assuming Place has an ID attribute
-                if (currentPlaceId > highestPlaceId) {
-                    highestPlaceId = currentPlaceId;
-                }
+        Iterator<Place> placeIterator = quadTree.getAllPlaces().iterator();
+        while (placeIterator.hasNext()) {
+            int currentPlaceId = placeIterator.next().getId(); // Assuming Place has an ID attribute
+            if (currentPlaceId > highestPlaceId) {
+                highestPlaceId = currentPlaceId;
             }
         }
         return highestPlaceId;

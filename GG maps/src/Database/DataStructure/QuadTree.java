@@ -13,6 +13,7 @@ public class QuadTree implements Serializable {
     private final int capacity;
     private final Node root;
     public Set<Place> searchResult;
+    public Set<Node> nodeResult;
 
     public QuadTree(double x, double y, double width, double height, int capacity) {
         this.capacity = capacity;
@@ -65,6 +66,44 @@ public class QuadTree implements Serializable {
                     node.children[i].insert(place);
                     break;
                 }
+            }
+        }
+    }
+
+    public Set<Node> getBoundedNodes(double x, double y, double width, double height) {
+        this.nodeResult = new Set<>();
+        getBoundedNodes(root, x, y, width, height);
+        return this.nodeResult;
+    }
+
+    private void getBoundedNodes(Node node, double x, double y, double width, double height) {
+        if (node.x >= x && node.x < x + width && node.y >= y && node.y < y + height) {
+            nodeResult.add(node);
+        }
+        if (node.children != null) {
+            for (int i = 0; i < 4; i++) {
+                getAllPlaces(node.children[i]);
+            }
+        }
+    }
+
+
+    public Set<Place> getAllPlaces(){
+        this.searchResult = new Set<>();
+        getAllPlaces(root);
+        return this.searchResult;
+    }
+
+    private void getAllPlaces(Node node) {
+        if (node.places != null) {
+            Iterator<Place> placeIterator = node.places.iterator();
+            while (placeIterator.hasNext()) {
+                Place place = placeIterator.next();
+                this.searchResult.add(place);
+            }
+        } else {
+            for (int i = 0; i < 4; i++) {
+                getAllPlaces(node.children[i]);
             }
         }
     }
