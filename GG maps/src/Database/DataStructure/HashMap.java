@@ -27,7 +27,6 @@ public class HashMap<K, V> implements Serializable {
         int index = Math.abs(getIndex(key));
         if (table[index] == null) {
             table[index] = new Entry<>(key, value);
-            size++;
         } else {
             Entry<K, V> entry = table[index];
             while (entry != null) {
@@ -41,8 +40,8 @@ public class HashMap<K, V> implements Serializable {
                 entry = entry.next;
             }
             entry.next = new Entry<>(key, value);
-            size++;
         }
+        size++;
 
     }
 
@@ -50,7 +49,7 @@ public class HashMap<K, V> implements Serializable {
         if (key == null)
             return null; // Null keys not supported
         int index = Math.abs(getIndex(key));
-        Entry<K, V> entry = table[index];
+        Entry<K, V> entry = table[index];;
         while (entry != null) {
             if (entry.key.equals(key)) {
                 return entry.value;
@@ -61,6 +60,7 @@ public class HashMap<K, V> implements Serializable {
     }
 
     public boolean containsKey(K key) {
+        System.out.println(get(key));
         return get(key) != null;
     }
 
@@ -97,7 +97,7 @@ public class HashMap<K, V> implements Serializable {
 
 
     private int getIndex(K key) {
-        return key.hashCode() % table.length;
+        return Math.abs(key.hashCode() % table.length);
     }
 
     public void clear() {

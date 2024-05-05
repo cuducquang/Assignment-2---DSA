@@ -48,6 +48,17 @@ public class Place implements Serializable{
         this.placeName = placeName;
     }
 
+    public boolean haveService(String serviceType) {
+        Iterator<String> iterator = services.iterator();
+        while (iterator.hasNext()) {
+            String service = iterator.next();
+            if (service.equals(serviceType)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private String servicesToString() {
         StringBuilder sb = new StringBuilder("[");
         Iterator<String> iterator = services.iterator();

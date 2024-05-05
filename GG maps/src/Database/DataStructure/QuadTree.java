@@ -75,13 +75,15 @@ public class QuadTree implements Serializable {
         return this.searchResult;
     }
 
+
+
     private void search(Node node, double x, double y, double width, double height, String serviceType, int maxResults) {
         if (node.places != null) {
             Iterator<Place> placeIterator = node.places.iterator();
             while (placeIterator.hasNext()) {
                 Place place = placeIterator.next();
                 if (place.getX() >= x && place.getX() < x + width && place.getY() >= y && place.getY() < y + height) {
-                    if (place.getServices().contains(serviceType)) {
+                    if (place.haveService(serviceType)) {
                         this.searchResult.add(place);
                         if (this.searchResult.size() == maxResults) {
                             return;

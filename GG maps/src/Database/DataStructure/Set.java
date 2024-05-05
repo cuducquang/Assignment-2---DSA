@@ -22,6 +22,10 @@ public class Set<E> implements Serializable {
         return map.containsKey(element);
     }
 
+    public HashMap<E, Object> getValues() {
+        return map;
+    }
+
     public void remove(E element) {
         map.remove(element);
     }
