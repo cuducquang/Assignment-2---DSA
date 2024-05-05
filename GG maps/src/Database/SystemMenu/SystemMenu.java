@@ -28,26 +28,36 @@ public class SystemMenu {
         System.out.println("Please enter your choice: ");
     }
 
+    public List<Place> generateRandomData(int numberOfPlaces) {
+        List<Place> places = new List<Place>();
+        List<String> serviceTypes = Arrays.asList("ATM", "Restaurant", "Hospital", "Gas Station", "Coffee Shop", "Pharmacy", "Park", "School", "Supermarket", "Library");
+        Random rand = new Random();
+        for (int i = 0; i < numberOfPlaces; i++) {
+            int placeId = i + 1;
+            double x = rand.nextDouble() * mapWidth;
+            double y = rand.nextDouble() * mapHeight;
+            int numberOfServices = rand.nextInt(5) + 1;
+            Set<String> services = new Set<>();
+            for (int j = 0; j < numberOfServices; j++) {
+                int randomIndex = rand.nextInt(serviceTypes.size());
+                services.add(serviceTypes.get(randomIndex));
+            }
+
+            Place place = new Place(x, y, placeId, services);
+            places.add(place);
+        }
+        return places;
+    }
+
     public void start() {
-//        List<String> serviceTypes = Arrays.asList("ATM", "Restaurant", "Hospital", "Gas Station", "Coffee Shop", "Pharmacy", "Park", "School", "Supermarket", "Library");
-//        Random rand = new Random();
-//        for (int i = 0; i < numberOfPlaces; i++) {
-//            int placeId = i + 1;
-//            double x = rand.nextDouble() * mapWidth;
-//            double y = rand.nextDouble() * mapHeight;
-//            int numberOfServices = rand.nextInt(5) + 1;
-//            Set<String> services = new Set<>();
-//            for (int j = 0; j < numberOfServices; j++) {
-//                int randomIndex = rand.nextInt(serviceTypes.size());
-//                services.add(serviceTypes.get(randomIndex));
-//            }
-//
-//            Place place = new Place(x, y, placeId, services);
-//
+//        List<Place> places = generateRandomData(100000);
+//        Iterator<Place> placesIterator = places.iterator();
+//        while (placesIterator.hasNext()) {
+//            Place place = placesIterator.next();
 //            map.add(place);
 //        }
 //        map.saveData("places_data.dat");
-//        map.loadData();
+        map.loadData();
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
 
@@ -149,7 +159,6 @@ public class SystemMenu {
     public void searchByServiceType(Scanner sc) {
         System.out.println("Enter the service type you want to search: ");
         String serviceType = sc.nextLine();
-        map.loadPlacesForService(serviceType);
         Set<Place> results = map.search(0, 0, mapWidth, mapHeight, serviceType, 50);
         int index = 1;
 

@@ -1,13 +1,18 @@
 package Database.DataStructure;
 import Database.Place;
 
+import java.io.Serializable;
 import java.util.Iterator;
+import java.io.Serial;
 
 
 
-public class QuadTree {
+public class QuadTree implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 5708090990685126726L;
     private final int capacity;
     private final Node root;
+    public Set<Place> searchResult;
 
     public QuadTree(double x, double y, double width, double height, int capacity) {
         this.capacity = capacity;
@@ -65,24 +70,20 @@ public class QuadTree {
     }
 
     public Set<Place> search(double x, double y, double width, double height, String serviceType, int maxResults) {
-        Set<Place> result = new Set<>();
-        search(root, x, y, width, height, serviceType, result, maxResults);
-        return result;
+        this.searchResult = new Set<>();
+        search(root, x, y, width, height, serviceType, maxResults);
+        return this.searchResult;
     }
 
-    private void search(Node node, double x, double y, double width, double height, String serviceType, Set<Place> result, int maxResults) {
-        if (node == null) {
-            return;
-        }
-
+    private void search(Node node, double x, double y, double width, double height, String serviceType, int maxResults) {
         if (node.places != null) {
             Iterator<Place> placeIterator = node.places.iterator();
             while (placeIterator.hasNext()) {
                 Place place = placeIterator.next();
                 if (place.getX() >= x && place.getX() < x + width && place.getY() >= y && place.getY() < y + height) {
                     if (place.getServices().contains(serviceType)) {
-                        result.add(place);
-                        if (result.size() == maxResults) {
+                        this.searchResult.add(place);
+                        if (this.searchResult.size() == maxResults) {
                             return;
                         }
                     }
@@ -92,7 +93,7 @@ public class QuadTree {
         } else {
             for (int i = 0; i < 4; i++) {
                 if (node.children[i].intersects(x, y, width, height)) {
-                    search(node.children[i], x, y, width, height, serviceType, result, maxResults);
+                    search(node.children[i], x, y, width, height, serviceType, maxResults);
                 }
             }
         }
@@ -146,7 +147,7 @@ public class QuadTree {
     }
 
 
-    private static class Node {
+    private static class Node implements Serializable{
         private final double x;
         private final double y;
         private final double width;

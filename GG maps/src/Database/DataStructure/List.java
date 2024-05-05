@@ -1,6 +1,6 @@
 package Database.DataStructure;
-
-public class List<T> {
+import java.util.Iterator;
+public class List<T> implements Iterable<T> {
     private Object[] elements;
     private int size;
     private static final int DEFAULT_CAPACITY = 10;
@@ -32,5 +32,26 @@ public class List<T> {
     private void ensureCapacity() {
         int newSize = elements.length * 2;
         elements = Arrays.copyOf(elements, newSize);
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            private int index = 0;
+
+            @Override
+            public boolean hasNext() {
+                return index < size;
+            }
+
+            @Override
+            @SuppressWarnings("unchecked")
+            public T next() {
+                if (!hasNext()) {
+                    throw new IndexOutOfBoundsException();
+                }
+                return (T) elements[index++];
+            }
+        };
     }
 }
