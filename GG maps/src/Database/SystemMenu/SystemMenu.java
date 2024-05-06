@@ -3,7 +3,9 @@ package Database.SystemMenu;
 import Database.*;
 import Database.DataStructure.Arrays;
 import Database.DataStructure.List;
+import Database.DataStructure.QuadTree;
 import Database.DataStructure.Set;
+
 
 import java.util.Random;
 import java.util.Scanner;
@@ -17,6 +19,7 @@ public class SystemMenu {
     int capacity = 100;
 
     Map2D map = new Map2D(mapWidth, mapHeight, capacity);
+
 
     public void displayMenu() {
         System.out.println("-------------Welcome to the Map 2D-------------------");
@@ -252,4 +255,5 @@ public class SystemMenu {
             index++;
         }
     }
+
 }

@@ -143,6 +143,40 @@ public class Map2D {
             e.printStackTrace();
         }
     }
+    public void searchByCurrentPosition(double centerX, double centerY, double radius, String serviceType) {
+        // Calculate the bounding rectangle based on the given center (X, Y) and radius
+        double halfWidth = radius;
+        double halfHeight = radius;
+        double x1 = centerX - halfWidth;
+        double y1 = centerY - halfHeight;
+        double width = 2 * halfWidth;
+        double height = 2 * halfHeight;
 
+        // Use the QuadTree to search for nodes that intersect this bounding rectangle
+        Set<QuadTree.Node> boundedNodes = quadTree.getBoundedNodes(x1, y1, width, height);
+        int validLocations = 0;
+        int maxResults = 50; // Define the maximum number of results
+
+        for (QuadTree.Node node : boundedNodes) {
+            // Check each place within these nodes
+            for (Place place : node.places) {
+                if (place.getX() >= x1 && place.getX() <= x1 + width &&
+                        place.getY() >= y1 && place.getY() <= y1 + height &&
+                        place.haveService(serviceType)) {
+                    // Only increment and print valid locations if they match the service type
+                    validLocations++;
+                    System.out.println(place);
+                    if (validLocations >= maxResults) {
+                        break; // Stop if max results reached
+                    }
+                }
+            }
+            if (validLocations >= maxResults) {
+                break; // Additionally break from outer loop if limit reached
+            }
+        }
+
+        System.out.println("Number of valid locations found: " + validLocations);
+    }
 
 }

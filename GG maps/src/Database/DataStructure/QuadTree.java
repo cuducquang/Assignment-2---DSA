@@ -83,6 +83,7 @@ public class QuadTree implements Serializable {
         if (node.children != null) {
             for (int i = 0; i < 4; i++) {
                 getAllPlaces(node.children[i]);
+                //getBoundedNodes(node.children[i], x, y, width, height);
             }
         }
     }
