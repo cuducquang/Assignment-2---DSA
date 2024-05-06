@@ -154,7 +154,7 @@ public class SystemMenu {
         String[] selectedServices = input.split(",\\s*");
 
         if (selectedServices.length > 5) {
-            System.out.println("You can select up to 5 service types. Please try again.");
+            System.out.println("You can only select up to 5 service types. Please try again.");
             return;
         }
 
@@ -197,7 +197,6 @@ public class SystemMenu {
 
         if (confirmation.equalsIgnoreCase("yes")) {
             map.remove(placeToRemove);
-            System.out.println("Place removed successfully.");
             map.saveData("places_data.dat");
         } else {
             System.out.println("Operation canceled.");

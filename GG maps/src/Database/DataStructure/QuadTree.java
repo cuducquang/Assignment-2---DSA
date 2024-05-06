@@ -142,31 +142,29 @@ public class QuadTree implements Serializable {
 
 
     public boolean remove(Place place) {
-        remove(root, place);
-        return false;
+        return remove(root, place);
     }
 
     private boolean remove(Node node, Place place) {
-        if (node == null) {
-            return false;
-        }
-
-        // Check if the node contains the place
-        if (node.contains(place)) {
-            // If it's a leaf node, remove the place from the node's places set
-            if (node.places != null && node.places.contains(place)) {
-                node.places.remove(place);
-                return true;
-            } else {
-                // Otherwise, recursively remove from children
-                for (int i = 0; i < 4; i++) {
-                    if (remove(node.children[i], place)) {
-                        // If a child node was removed, check if the node needs to be merged
-                        if (shouldMerge(node)) {
-                            merge(node);
-                        }
-                        return true;
+        if (node.places != null) {
+            Iterator<Place> placeIterator = node.places.iterator();
+            while (placeIterator.hasNext()) {
+                Place thisPlace = placeIterator.next();
+                if (thisPlace.equals(place)) {
+                    node.removePlace(thisPlace);
+                    System.out.println(node.places.toString());
+                    return true;
+                }
+            }
+        } else {
+            // Otherwise, recursively remove from children
+            for (int i = 0; i < 4; i++) {
+                if (remove(node.children[i], place)) {
+                    // If a child node was removed, check if the node needs to be merged
+                    if (shouldMerge(node)) {
+                        merge(node);
                     }
+                    return true;
                 }
             }
         }
@@ -190,6 +188,8 @@ public class QuadTree implements Serializable {
 
 
     private static class Node implements Serializable{
+        @Serial
+        private static final long serialVersionUID = -7578953917976019431L;
         private final double x;
         private final double y;
         private final double width;
@@ -212,6 +212,10 @@ public class QuadTree implements Serializable {
             double x = place.getX();
             double y = place.getY();
             return (x >= this.x && x < this.x + width && y >= this.y && y < this.y + height);
+        }
+
+        public void removePlace(Place place) {
+            this.places.remove(place);
         }
 
         public boolean intersects(double x, double y, double width, double height) {

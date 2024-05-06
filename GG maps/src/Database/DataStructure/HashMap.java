@@ -60,7 +60,6 @@ public class HashMap<K, V> implements Serializable {
     }
 
     public boolean containsKey(K key) {
-        System.out.println(get(key));
         return get(key) != null;
     }
 
@@ -76,10 +75,11 @@ public class HashMap<K, V> implements Serializable {
     public V remove(K key) {
         if (key == null)
             return null; // Null keys not supported
-        int index = getIndex(key);
+        int index = Math.abs(getIndex(key));
         Entry<K, V> entry = table[index];
         Entry<K, V> prev = null;
         while (entry != null) {
+            System.out.println(entry.key.toString());
             if (entry.key.equals(key)) {
                 if (prev == null) {
                     table[index] = entry.next;
@@ -90,7 +90,7 @@ public class HashMap<K, V> implements Serializable {
                 return entry.value;
             }
             prev = entry;
-            entry = entry.next;
+            entry = entry.getNext();
         }
         return null;
     }
@@ -176,6 +176,9 @@ public class HashMap<K, V> implements Serializable {
 
 
     public static class Entry<K, V> implements Serializable{
+        @Serial
+        private static final long serialVersionUID = -8520682291953982672L;
+
         K key;
         V value;
         Entry<K, V> next;
@@ -192,6 +195,8 @@ public class HashMap<K, V> implements Serializable {
         public V getValue() {
             return value;
         }
+
+        public Entry<K, V> getNext() {return next;}
     }
 }
 
