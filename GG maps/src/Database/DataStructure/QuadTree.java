@@ -2,6 +2,7 @@ package Database.DataStructure;
 import Database.Place;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.io.Serial;
 
@@ -33,6 +34,38 @@ public class QuadTree implements Serializable {
                 if (node.children[0] == null) {
                     split(node);
                 }
+                for (int i = 0; i < 4; i++) {
+                    if (node.children[i].contains(place)) {
+                        insert(node.children[i], place);
+                        return;
+                    }
+                }
+            }
+        }
+
+        if (node.listOfPlaces != null) {
+            if (node.listOfPlaces.size() < capacity || node.depth == 100) {
+//              Check through set of services
+                Iterator<String> iterator =  place.getServices().iterator();
+                while (iterator.hasNext()) {
+//                  Get the corresponding index for the service
+                    String element = iterator.next();
+                    int index = node.serviceMap.get(element);
+
+//                  Check if the head of that linked list is null
+                    Place head = (Place) node.listOfPlaces.getHead(index);
+                    if (head.getServices() == null) {
+                        node.listOfPlaces.replaceHead(index, place);
+                    }
+                    else {
+//                      Add place into the list
+                        node.listOfPlaces.addEdge(index, place);
+                    }
+                }
+            } else {
+                if (node.children[0] == null) {
+                    split(node);
+                }
 
                 for (int i = 0; i < 4; i++) {
                     if (node.children[i].contains(place)) {
@@ -42,6 +75,7 @@ public class QuadTree implements Serializable {
                 }
             }
         }
+
     }
 
     private void split(Node node) {
@@ -196,6 +230,9 @@ public class QuadTree implements Serializable {
         private final double height;
         private final int depth;
         private Set<Place> places;
+        private AdjacencyList listOfPlaces;
+
+        private HashMap<String, Integer> serviceMap;
         private Node[] children;
 
         public Node(double x, double y, double width, double height, int depth) {
@@ -205,7 +242,34 @@ public class QuadTree implements Serializable {
             this.height = height;
             this.depth = depth;
             this.places = new Set<>();
+            this.listOfPlaces = createPlacesAdjList();
+            this.serviceMap = createServiceMap();
             this.children = new Node[4];
+        }
+
+//        create an adjacency list of 10 default places for 10 services
+        private AdjacencyList createPlacesAdjList(){
+            AdjacencyList adjList = new AdjacencyList();
+            for (int i = 0; i < 10; i++) {
+                adjList.addNode(new Place());
+            }
+            return adjList;
+        }
+
+        private HashMap<String, Integer> createServiceMap() {
+            HashMap<String, Integer> map = new HashMap<>();
+            map.put("ATM", 0);
+            map.put("Restaurant", 1);
+            map.put("Hospital", 2);
+            map.put("Gas Station", 3);
+            map.put("Coffee Shop", 4);
+            map.put("Pharmacy", 5);
+            map.put("Park", 6);
+            map.put("School", 7);
+            map.put("Supermarket", 8);
+            map.put("Library", 9);
+
+            return map;
         }
 
         public boolean contains(Place place) {

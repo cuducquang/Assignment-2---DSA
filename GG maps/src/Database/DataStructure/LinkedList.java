@@ -197,11 +197,15 @@ public class LinkedList<T> extends List<T> {
     return false;
   }
 
+  public T getHead() {
+    return head.data;
+  }
+
   public static void main(String[] args) {
-//    LinkedList<String> names = new LinkedList<>();
-//    names.insertAt(0, "World");  // World
-//    names.insertAt(0, "Hello");  // Hello, World
-//    names.insertAt(0, "RMIT");  // RMIT, Hello, World
+    LinkedList<String> names = new LinkedList<>();
+    names.insertAt(0, "World");  // World
+    names.insertAt(0, "Hello");  // Hello, World
+    names.insertAt(0, "RMIT");  // RMIT, Hello, World
 //    System.out.println("-------First Test-------");
 //    names.reset();
 //    while (names.hasNext()) {

@@ -193,5 +193,25 @@ public class HashMap<K, V> implements Serializable {
             return value;
         }
     }
+
+    public static void main(String[] args) {
+//        ("ATM", "Restaurant", "Hospital", "Gas Station", "Coffee Shop", "Pharmacy", "Park", "School", "Supermarket", "Library")
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("ATM", 0);
+        map.put("Restaurant", 1);
+        map.put("Hospital", 2);
+        map.put("Gas Station", 3);
+        map.put("Coffee Shop", 4);
+        map.put("Pharmacy", 5);
+        map.put("Park", 6);
+        map.put("School", 7);
+        map.put("Supermarket", 8);
+        map.put("Library", 9);
+
+        System.out.println(map.get("ATM"));
+        System.out.println(map.get("Gas Station"));
+        System.out.println(map.get("School"));
+
+    }
 }
 

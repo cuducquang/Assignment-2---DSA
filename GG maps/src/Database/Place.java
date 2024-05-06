@@ -19,8 +19,16 @@ public class Place implements Serializable{
     public Place(double x, double y, int placeId, Set<String> services) {
         this.x = x;
         this.y = y;
-        this.placeId =placeId;
+        this.placeId = placeId;
         this.services = services;
+        this.placeName = null;
+    }
+
+    public Place() {
+        this.x = -1;
+        this.y = -1;
+        this.placeId = -1;
+        this.services = null;
         this.placeName = null;
     }
 
