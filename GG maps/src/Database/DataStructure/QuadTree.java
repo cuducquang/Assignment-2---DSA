@@ -141,8 +141,9 @@ public class QuadTree implements Serializable {
     }
 
 
-    public void remove(Place place) {
+    public boolean remove(Place place) {
         remove(root, place);
+        return false;
     }
 
     private boolean remove(Node node, Place place) {

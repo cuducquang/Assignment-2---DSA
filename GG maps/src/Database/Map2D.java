@@ -33,7 +33,12 @@ public class Map2D {
     }
 
     public void remove(Place place) {
-        quadTree.remove(place);
+        boolean removed = quadTree.remove(place);
+        if (removed) {
+            System.out.println("Place removed successfully.");
+        } else {
+            System.out.println("Failed to remove place. Place not found.");
+        }
     }
 
     public Set<Place> search(double x, double y, double width, double height, String serviceType, int maxResults) {
@@ -67,6 +72,10 @@ public class Map2D {
             }
         }
         return highestPlaceId;
+    }
+
+    public Set<Place> getAllPlaces() {
+        return quadTree.getAllPlaces();
     }
 
 

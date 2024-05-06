@@ -74,7 +74,7 @@ public class SystemMenu {
                     editPlace(scanner);
                     break;
                 case 3:
-//                    removePlace();
+                    removePlace(scanner);
                     break;
                 case 4:
                     searchPlace();
@@ -120,8 +120,91 @@ public class SystemMenu {
     }
 
     public void editPlace(Scanner scanner) {
+        System.out.println("Enter the ID of the place you want to edit: ");
+        int placeId = scanner.nextInt();
+        scanner.nextLine();
+        Place placeToEdit = null;
+
+        Set<Place> allPlaces = map.getAllPlaces();
+        Iterator<Place> iterator = allPlaces.iterator();
+
+        while (iterator.hasNext()) {
+            Place place = iterator.next();
+            if (place.getId() == placeId) {
+                placeToEdit = place;
+                break;
+            }
+        }
+
+
+        if (placeToEdit == null) {
+            System.out.println("Place with ID " + placeId + " not found.");
+            return;
+        }
+
+        System.out.println("Editing place: " + placeToEdit);
+        System.out.println("Enter new service types (up to 5 types, separated by commas): ");
+        System.out.println("Available service types:");
+        List<String> serviceTypes = Arrays.asList("ATM", "Restaurant", "Hospital", "Gas Station", "Coffee Shop", "Pharmacy", "Park", "School", "Supermarket", "Library");
+        for (String service : serviceTypes) {
+            System.out.println(service);
+        }
+
+        String input = scanner.nextLine();
+        String[] selectedServices = input.split(",\\s*");
+
+        if (selectedServices.length > 5) {
+            System.out.println("You can select up to 5 service types. Please try again.");
+            return;
+        }
+
+        Set<String> newServices = new Set<>();
+        for (String service : selectedServices) {
+            newServices.add(service);
+        }
+
+        map.edit(placeToEdit, newServices);
+        System.out.println("Place edited successfully.");
+        map.saveData("places_data.dat");
+    }
+
+    public void removePlace(Scanner scanner) {
+        System.out.println("Enter the ID of the place you want to remove: ");
+        int placeId = scanner.nextInt();
+        scanner.nextLine();
+        Place placeToRemove = null;
+
+        Set<Place> allPlaces = map.getAllPlaces();
+        Iterator<Place> iterator = allPlaces.iterator();
+
+        while (iterator.hasNext()) {
+            Place place = iterator.next();
+            if (place.getId() == placeId) {
+                placeToRemove = place;
+                break;
+            }
+        }
+
+        if (placeToRemove == null) {
+            System.out.println("Place with ID " + placeId + " not found.");
+            return;
+        }
+
+        System.out.println("Do you want to remove the following place?");
+        System.out.println(placeToRemove.toString());
+        System.out.println("Enter 'yes' to confirm, or any other key to cancel: ");
+        String confirmation = scanner.nextLine();
+
+        if (confirmation.equalsIgnoreCase("yes")) {
+            map.remove(placeToRemove);
+            System.out.println("Place removed successfully.");
+            map.saveData("places_data.dat");
+        } else {
+            System.out.println("Operation canceled.");
+        }
 
     }
+
 
     public void searchPlace() {
         Scanner sc = new Scanner(System.in);
