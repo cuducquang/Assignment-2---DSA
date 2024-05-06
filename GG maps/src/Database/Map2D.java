@@ -78,6 +78,9 @@ public class Map2D {
         return quadTree.getAllPlaces();
     }
 
+    public void reArrange(){
+        quadTree.reArrangePlaces();
+    }
 
 
     // Load all data
@@ -85,6 +88,7 @@ public class Map2D {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
             QuadTree loadedQuadTree = (QuadTree) in.readObject();
             this.quadTree = loadedQuadTree;
+            quadTree.reArrangePlaces();
         } catch (EOFException eofException) {
             // Handle EOFException separately
             System.err.println("Unexpected end of file: " + filename);
@@ -94,43 +98,6 @@ public class Map2D {
             e.printStackTrace();
         }
     }
-
-    // Load all places containing a service
-    public void loadPlacesForService(String service) {
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
-            HashMap<String, Set<Place>> data = (HashMap<String, Set<Place>>) in.readObject();
-            Set<Place> values = data.getOrDefault(service, new Set<>());
-            serviceIndex.put(service, values);
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Load services of a place
-    public void loadServicesForPlace(int placeId) {
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
-            HashMap<String, Set<Place>> data = (HashMap<String, Set<Place>>) in.readObject();
-            Iterator<Set<Place>> iterator = data.values().iterator();
-            while (iterator.hasNext()) {
-                Set<Place> places = iterator.next();
-                Iterator<Place> placeIterator = places.iterator();
-                while (placeIterator.hasNext()) {
-                    Place place = placeIterator.next();
-                    if (place.getId() == placeId) {
-                        Iterator<String> serviceIterator = place.getServices().iterator();
-                        while (serviceIterator.hasNext()) {
-                            String service = serviceIterator.next();
-                            serviceIndex.put(service, new Set<Place>());
-                            serviceIndex.get(service).add(place);
-                        }
-                    }
-                }
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
 
 
 

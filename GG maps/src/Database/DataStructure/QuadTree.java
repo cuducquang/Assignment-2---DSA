@@ -55,6 +55,7 @@ public class QuadTree implements Serializable {
         node.children[2] = new Node(x, y + subHeight, subWidth, subHeight, node.depth + 1);
         node.children[3] = new Node(x + subWidth, y + subHeight, subWidth, subHeight, node.depth + 1);
 
+        // Transfer place to children
         Set<Place> places = node.places;
         node.places = null;
 
@@ -141,6 +142,21 @@ public class QuadTree implements Serializable {
     }
 
 
+    public void reArrangePlaces() {
+        reArrangePlaces(root);
+    }
+
+    public void reArrangePlaces(Node node){
+        if (node != null) {
+            if (node.places != null){
+                node.reArrangePlaces();
+            }
+            for (int i = 0; i < 4; i++) {
+                reArrangePlaces(node.children[i]);
+            }
+        }
+    }
+
     public boolean remove(Place place) {
         return remove(root, place);
     }
@@ -216,6 +232,12 @@ public class QuadTree implements Serializable {
 
         public void removePlace(Place place) {
             this.places.remove(place);
+        }
+
+        public void reArrangePlaces() {
+            Set<Place> newPlaces = this.places;
+            newPlaces.reArrange();
+           this.places = newPlaces;
         }
 
         public boolean intersects(double x, double y, double width, double height) {

@@ -50,12 +50,15 @@ public class SystemMenu {
     }
 
     public void start() {
-//        List<Place> places = generateRandomData(100000);
-//        Iterator<Place> placesIterator = places.iterator();
-//        while (placesIterator.hasNext()) {
-//            Place place = placesIterator.next();
-//            map.add(place);
+//        for (int i = 0; i < 1000; i++) {
+//            List<Place> places = generateRandomData(100000);
+//            Iterator<Place> placesIterator = places.iterator();
+//            while (placesIterator.hasNext()) {
+//                Place place = placesIterator.next();
+//                map.add(place);
+//            }
 //        }
+//
 //        map.saveData("places_data.dat");
         map.loadData();
         Scanner scanner = new Scanner(System.in);

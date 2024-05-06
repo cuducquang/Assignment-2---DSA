@@ -46,8 +46,9 @@ public class HashMap<K, V> implements Serializable {
     }
 
     public V get(K key) {
-        if (key == null)
+        if (key == null) {
             return null; // Null keys not supported
+        }
         int index = Math.abs(getIndex(key));
         Entry<K, V> entry = table[index];;
         while (entry != null) {
@@ -66,6 +67,21 @@ public class HashMap<K, V> implements Serializable {
     public int size() {
         return size;
     }
+
+    public void rehash() {
+        HashMap<K, V> newMap = new HashMap<>();
+        // Re-insert all elements into the new map
+        Iterator<Entry<K, V>> entryIterator = entrySet().iterator();
+        while (entryIterator.hasNext()) {
+            Entry<K, V> entry = entryIterator.next();
+            newMap.put(entry.getKey(), entry.getValue());
+        }
+
+        // Replace the original map with the new one
+        this.table = newMap.table;
+        this.size = newMap.size;
+    }
+
 
     public V getOrDefault(K key, V defaultValue) {
         V value = get(key);

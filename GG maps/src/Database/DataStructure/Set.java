@@ -34,6 +34,12 @@ public class Set<E> implements Serializable {
         return map.size();
     }
 
+    public void reArrange() {
+        HashMap<E, Object> newMap = this.map;
+        newMap.rehash();
+        this.map = newMap;
+    }
+
 
     @Override
     public String toString() {
