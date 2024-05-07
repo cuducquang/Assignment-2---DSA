@@ -2,7 +2,9 @@ package Database.DataStructure;
 
 import Database.Place;
 
-public class AdjacencyList {
+import java.io.Serializable;
+
+public class AdjacencyList implements Serializable {
     List<LinkedList<Node>> aList;
 
     private int size;
@@ -56,16 +58,20 @@ public class AdjacencyList {
         return size;
     }
 
-    public void print(){
-        for(LinkedList<Node> currentList : aList){
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (LinkedList<Node> currentList : aList) {
             currentList.reset();
-            while (currentList.hasNext()){
+            while (currentList.hasNext()) {
                 String data = currentList.next().toString();
-                System.out.print(data + " -> ");
+                sb.append(data).append(" -> ");
             }
-            System.out.println();
+            sb.append("\n");
         }
+        return sb.toString();
     }
+
 
     public Object getHead(int index){
         LinkedList<Node> currentList = aList.get(index);
@@ -75,11 +81,23 @@ public class AdjacencyList {
 
 
     public <T> boolean removeNodeAt(int index, T value){
-        Node<T> inputNode = new Node<>(value);
-        return aList.get(index).remove(inputNode);
+        LinkedList<Node> newList = aList.get(index);
+        System.out.println(aList.get(index).size());
+        int pointer = 0;
+        newList.reset();
+        while (newList.hasNext()){
+            if (newList.next().data.equals(value)) {
+                newList.removeAt(pointer);
+                System.out.println(aList.get(index).size());
+                size--;
+                return true;
+            }
+            pointer++;
+        }
+        return false;
     }
 
-    private static class Node<T> {
+    private static class Node<T> implements Serializable {
         T data;
 
         public Node(T data) {
@@ -88,9 +106,14 @@ public class AdjacencyList {
 
         @Override
         public String toString() {
-            return data.toString();
+            try {
+                return data.toString();
+            } catch (Exception e) {
+                return "null";
+            }
         }
     }
+
 
     public static void main(String[] args) {
 //      Testing
@@ -121,8 +144,9 @@ public class AdjacencyList {
         adj.addEdge(1, place5);
 
         adj.removeNodeAt(0, place2);
+        System.out.println(adj.removeNodeAt(0, place2));
 
-        adj.print();
+        System.out.println(adj.toString());
 
         System.out.println("Size: " + adj.size());
         System.out.println();

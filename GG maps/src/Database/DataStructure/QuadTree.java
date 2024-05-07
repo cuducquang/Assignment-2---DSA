@@ -29,22 +29,8 @@ public class QuadTree implements Serializable {
         if (node.places != null) {
             if (node.places.size() < capacity || node.depth == 100) {
                 node.places.add(place);
-                return;
-            } else {
-                if (node.children[0] == null) {
-                    split(node);
-                }
-                for (int i = 0; i < 4; i++) {
-                    if (node.children[i].contains(place)) {
-                        insert(node.children[i], place);
-                        return;
-                    }
-                }
-            }
-        }
 
-        if (node.listOfPlaces != null) {
-            if (node.listOfPlaces.size() < capacity || node.depth == 100) {
+//              Insert place to adjacency list
 //              Check through set of services
                 Iterator<String> iterator =  place.getServices().iterator();
                 while (iterator.hasNext()) {
@@ -62,11 +48,14 @@ public class QuadTree implements Serializable {
                         node.listOfPlaces.addEdge(index, place);
                     }
                 }
+
+                System.out.println(node.getListOfPlaces());
+
+                return;
             } else {
                 if (node.children[0] == null) {
                     split(node);
                 }
-
                 for (int i = 0; i < 4; i++) {
                     if (node.children[i].contains(place)) {
                         insert(node.children[i], place);
@@ -76,7 +65,25 @@ public class QuadTree implements Serializable {
             }
         }
 
+//        if (node.listOfPlaces != null) {
+//            if (node.listOfPlaces.size() < capacity || node.depth == 100) {
+//
+//            } else {
+//                if (node.children[0] == null) {
+//                    split(node);
+//                }
+//
+//                for (int i = 0; i < 4; i++) {
+//                    if (node.children[i].contains(place)) {
+//                        insert(node.children[i], place);
+//                        return;
+//                    }
+//                }
+//            }
+//        }
     }
+
+//    public void insertAdjList(Node node, Place place)
 
     private void split(Node node) {
         double subWidth = node.width / 2;
@@ -283,7 +290,11 @@ public class QuadTree implements Serializable {
         }
 
         public void insert(Place place) {
-                places.add(place);
+            places.add(place);
+        }
+
+        public AdjacencyList getListOfPlaces() {
+            return this.listOfPlaces;
         }
     }
 }

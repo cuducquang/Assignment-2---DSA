@@ -1,7 +1,9 @@
 package Database.DataStructure;
 
-public class LinkedList<T> extends List<T> {
-  static class Node<T> {
+import java.io.Serializable;
+
+public class LinkedList<T> extends List<T> implements Serializable {
+  static class Node<T> implements Serializable {
     T data;
     Node<T> next;
 
@@ -181,7 +183,8 @@ public class LinkedList<T> extends List<T> {
       return false;
     }
     if (head.data.equals(value)) {
-      return removeAtHead();
+      removeAtHead();
+      return true;
     }
     Node<T> current = head.next;
     Node<T> previous = head;
@@ -206,11 +209,13 @@ public class LinkedList<T> extends List<T> {
     names.insertAt(0, "World");  // World
     names.insertAt(0, "Hello");  // Hello, World
     names.insertAt(0, "RMIT");  // RMIT, Hello, World
-//    System.out.println("-------First Test-------");
-//    names.reset();
-//    while (names.hasNext()) {
-//      System.out.println(names.next());
-//    }
+    names.remove("RMIT");
+
+    System.out.println("-------First Test-------");
+    names.reset();
+    while (names.hasNext()) {
+      System.out.println(names.next());
+    }
 //    names.insertBefore("RMIT", "SSET");  // SSET, RMIT, Hello, World
 //    names.insertAfter("World", "4.0");  // SSET, RMIT, Hello, World, 4.0
 //    names.insertAfter("Alice", "Wonderland");  // SSET, RMIT, Hello, World, 4.0 (no change)

@@ -1,6 +1,8 @@
 package Database.DataStructure;
 import java.util.Iterator;
-public class List<T> implements Iterable<T> {
+import java.io.Serializable;
+
+public class List<T> implements Iterable<T>, Serializable {
     private Object[] elements;
     private int size;
     private static final int DEFAULT_CAPACITY = 10;
@@ -23,6 +25,13 @@ public class List<T> implements Iterable<T> {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
         return (T) elements[index];
+    }
+
+    public void set(int index, T value) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
+        elements[index] = value;
     }
 
     public int size() {
@@ -53,5 +62,15 @@ public class List<T> implements Iterable<T> {
                 return (T) elements[index++];
             }
         };
+    }
+
+    public static void main(String[] args) {
+//        List<String> list = new List<String>();
+//        list.add("Hello");
+//        list.add("World");
+//        list.set(1, "Mama");
+//        System.out.println(list.get(0));
+//        System.out.println(list.get(1));
+
     }
 }
