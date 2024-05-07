@@ -111,5 +111,49 @@ public class Map2D {
         }
     }
 
+    public void searchByCurrentPosition(double centerX, double centerY, double radius, String serviceType) {
+        // Calculate the bounding rectangle based on the given center (X, Y) and radius
+
+        double x1 = centerX + Math.sqrt(2*radius*radius);
+        double y1 = centerY + Math.sqrt(2*radius*radius);
+        double width = 2 * radius;
+        double height = 2 * radius;
+
+        // Use the QuadTree to search for nodes that intersect this bounding rectangle
+        Set<QuadTree.Node> boundedNodes = quadTree.getPartiallyContainedNodes(x1, y1, width, height);
+
+        int validLocations = 0;
+        int maxResults = 50; // Define the maximum number of results
+
+        Iterator<QuadTree.Node> iterator = boundedNodes.iterator();
+
+
+        while (iterator.hasNext()) {
+            QuadTree.Node node = iterator.next();
+            Set<Place> places = node.getPlaces();
+            if (places == null) {
+                continue;
+            }
+
+            Iterator<Place> placeIterator = places.iterator();
+            while(placeIterator.hasNext()) {
+                Place place = placeIterator.next();
+                if (place.getX() >= x1 && place.getX() <= x1 + width &&
+                        place.getY() >= y1 && place.getY() <= y1 + height &&
+                        place.haveService(serviceType)) {
+                    validLocations++;
+                    System.out.println(place);
+                    if (validLocations >= maxResults) {
+                        break; // Stop if max results reached
+                    }
+                }
+            }
+            if (validLocations == maxResults) {
+                break;
+            }
+        }
+
+        System.out.println("Number of valid locations found: " + validLocations);
+    }
 
 }

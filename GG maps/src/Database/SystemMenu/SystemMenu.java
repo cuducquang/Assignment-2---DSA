@@ -229,7 +229,7 @@ public class SystemMenu {
                     searchByServiceType(sc);
                     break;
                 case 3:
-//                    searchByCurrentPosition();
+                    performCurrentPositionSearch(sc);
                     break;
                 case 4:
                     System.out.println("Return to menu");
@@ -253,5 +253,15 @@ public class SystemMenu {
             System.out.println("Place " + index + ": " + place.toString());
             index++;
         }
+    }
+    public void performCurrentPositionSearch(Scanner scanner) {
+        System.out.println("Enter center X, center Y, radius, and service type for search:");
+        double centerX = scanner.nextDouble();
+        double centerY = scanner.nextDouble();
+        double radius = scanner.nextDouble();
+        scanner.nextLine();  // Consume the remaining newline after numbers
+        String serviceType = scanner.nextLine();
+
+        map.searchByCurrentPosition(centerX, centerY, radius, serviceType);
     }
 }

@@ -88,6 +88,24 @@ public class QuadTree implements Serializable {
             }
         }
     }
+    public Set<Node> getPartiallyContainedNodes(double x, double y, double width, double height) {
+        this.nodeResult = new Set<>();
+        findPartiallyContainedNodes(root, x, y, width, height);
+        return this.nodeResult;
+    }
+
+    private void findPartiallyContainedNodes(Node node, double x, double y, double width, double height) {
+        if (node.isPartiallyContained(x, y, width, height)) {
+            nodeResult.add(node);
+        }
+        if (node.children != null) {
+            for (Node child : node.children) {
+                if (child != null) {
+                    findPartiallyContainedNodes(child, x, y, width, height);
+                }
+            }
+        }
+    }
 
 
     public Set<Place> getAllPlaces(){
@@ -204,7 +222,7 @@ public class QuadTree implements Serializable {
     }
 
 
-    private static class Node implements Serializable{
+    public static class Node implements Serializable{
         @Serial
         private static final long serialVersionUID = -7578953917976019431L;
         private final double x;
@@ -244,9 +262,19 @@ public class QuadTree implements Serializable {
         public boolean intersects(double x, double y, double width, double height) {
             return !(x + width < this.x || y + height < this.y || x > this.x + this.width || y > this.y + this.height);
         }
+        // Check if this node is only partially contained within a rectangle
+        public boolean isPartiallyContained(double x, double y, double width, double height) {
+            boolean intersects = intersects(x, y, width, height);
+            boolean fullyContained = (this.x >= x && this.x + this.width <= x + width &&
+                    this.y >= y && this.y + this.height <= y + height);
+            return intersects || fullyContained;
+        }
 
         public void insert(Place place) {
                 places.add(place);
+        }
+        public Set<Place> getPlaces() {
+            return places;
         }
     }
 }
