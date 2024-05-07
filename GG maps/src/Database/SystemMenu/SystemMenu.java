@@ -15,7 +15,6 @@ public class SystemMenu {
     int mapHeight = 10000000;
     int numberOfPlaces = 1000;
     int capacity = 100;
-
     Map2D map = new Map2D(mapWidth, mapHeight, capacity);
 
     public void displayMenu() {
@@ -59,7 +58,7 @@ public class SystemMenu {
 //            }
 //        }
 //
-//        map.saveData("places_data.dat");
+        map.saveData("places_data.dat");
         map.loadData();
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
@@ -254,6 +253,7 @@ public class SystemMenu {
             index++;
         }
     }
+
     public void performCurrentPositionSearch(Scanner scanner) {
         System.out.println("Enter center X, center Y, radius, and service type for search:");
         double centerX = scanner.nextDouble();
@@ -261,7 +261,13 @@ public class SystemMenu {
         double radius = scanner.nextDouble();
         scanner.nextLine();  // Consume the remaining newline after numbers
         String serviceType = scanner.nextLine();
-
-        map.searchByCurrentPosition(centerX, centerY, radius, serviceType);
+        Set<Place> results = map.searchByCurrentPosition(centerX, centerY, radius, serviceType);
+        int index = 1;
+        Iterator<Place> iterator = results.iterator();
+        while (iterator.hasNext()) {
+            Place place = iterator.next();
+            System.out.println("Place " + index + ": " + place.toString());
+            index++;
+        }
     }
 }

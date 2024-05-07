@@ -111,11 +111,11 @@ public class Map2D {
         }
     }
 
-    public void searchByCurrentPosition(double centerX, double centerY, double radius, String serviceType) {
+    public Set<Place> searchByCurrentPosition(double centerX, double centerY, double radius, String serviceType) {
         // Calculate the bounding rectangle based on the given center (X, Y) and radius
-
-        double x1 = centerX + Math.sqrt(2*radius*radius);
-        double y1 = centerY + Math.sqrt(2*radius*radius);
+        Set<Place> result = new Set<>();
+        double x1 = centerX - radius;
+        double y1 = centerY + radius;
         double width = 2 * radius;
         double height = 2 * radius;
 
@@ -134,7 +134,7 @@ public class Map2D {
             if (places == null) {
                 continue;
             }
-
+            System.out.println("x1: " + x1+" y1: "+y1+" width: "+width+" height: "+height);
             Iterator<Place> placeIterator = places.iterator();
             while(placeIterator.hasNext()) {
                 Place place = placeIterator.next();
@@ -142,7 +142,7 @@ public class Map2D {
                         place.getY() >= y1 && place.getY() <= y1 + height &&
                         place.haveService(serviceType)) {
                     validLocations++;
-                    System.out.println(place);
+                    result.add(place);
                     if (validLocations >= maxResults) {
                         break; // Stop if max results reached
                     }
@@ -152,8 +152,6 @@ public class Map2D {
                 break;
             }
         }
-
-        System.out.println("Number of valid locations found: " + validLocations);
+        return result;
     }
-
 }
