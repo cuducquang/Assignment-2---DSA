@@ -29,16 +29,17 @@ public class QuadTree implements Serializable {
             if (node.places.size() < capacity || node.depth == 100) {
                 node.places.add(place);
                 return;
-            } else {
-                if (node.children[0] == null) {
-                    split(node);
-                }
+            }
 
-                for (int i = 0; i < 4; i++) {
-                    if (node.children[i].contains(place)) {
-                        insert(node.children[i], place);
-                        return;
-                    }
+            if (node.children[0] == null) {
+                split(node);
+            }
+        } else {
+            for (int i = 0; i < 4; i++) {
+//                System.out.println(node.children[i].contains(place));
+                if (node.children[i].contains(place)) {
+                    insert(node.children[i], place);
+                    return;
                 }
             }
         }
