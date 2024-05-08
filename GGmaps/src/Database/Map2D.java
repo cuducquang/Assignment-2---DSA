@@ -33,45 +33,29 @@ public class Map2D {
     }
 
     public void remove(Place place) {
-        boolean removed = quadTree.remove(place);
-        if (removed) {
-            System.out.println("Place removed successfully.");
-        } else {
-            System.out.println("Failed to remove place. Place not found.");
-        }
+        quadTree.remove(place);
     }
 
     public Set<Place> search(double x, double y, double width, double height, String serviceType, int maxResults) {
-        Set<Place> result = new Set<>();
-        Set<Place> places = searchWithQuadTree(x, y, width, height, serviceType, maxResults);
-        Iterator<Place> iterator = places.iterator();
-        while (iterator.hasNext()) {
-            Place place = iterator.next();
-            if (place.getX() >= x && place.getX() < x + width && place.getY() >= y && place.getY() < y + height) {
-                result.add(place);
-                if (result.size() == maxResults) {
-                    break;
-                }
-            }
-        }
-
-        return result;
+        Set<Place> places = quadTree.search(x, y, width, height, serviceType, maxResults);
+        return places;
     }
 
-    public Set<Place> searchWithQuadTree(double x, double y, double width, double height, String serviceType, int maxResults) {
-        return quadTree.search(x, y, width, height, serviceType, maxResults);
-    }
 
     public int getHighestPlaceId() {
         return quadTree.getPlaceNum();
     }
 
-    public Set<Place> getAllPlaces() {
-        return quadTree.getAllPlaces();
-    }
 
-    public void reArrange(){
-        quadTree.reArrangePlaces();
+    public Place getPlaceById(int id) {
+        Iterator<Place> placeIterator = quadTree.getPlaceById(id).iterator();
+        while (placeIterator.hasNext()) {
+            Place place = placeIterator.next();
+            if (place.getId() == id) {
+                return place;
+            }
+        }
+        return null;
     }
 
 

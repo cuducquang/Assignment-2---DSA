@@ -19,6 +19,7 @@ public class Set<E> implements Serializable {
     }
 
     public boolean contains(E element) {
+        System.out.println(map.containsKey(element));
         return map.containsKey(element);
     }
 

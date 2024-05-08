@@ -26,12 +26,10 @@ public class SystemMenu {
         System.out.println("Please enter your choice: ");
     }
 
-    public List<Place> generateRandomData(int numberOfPlaces) {
-        List<Place> places = new List<Place>();
+    public void generateRandomData(int numberOfPlaces) {
         List<String> serviceTypes = Arrays.asList("ATM", "Restaurant", "Hospital", "Gas Station", "Coffee Shop", "Pharmacy", "Park", "School", "Supermarket", "Library");
         Random rand = new Random();
         for (int i = 0; i < numberOfPlaces; i++) {
-            int placeId = map.getHighestPlaceId() + 1;
             double x = rand.nextDouble() * mapWidth;
             double y = rand.nextDouble() * mapHeight;
             int numberOfServices = rand.nextInt(5) + 1;
@@ -41,23 +39,14 @@ public class SystemMenu {
                 services.add(serviceTypes.get(randomIndex));
             }
 
-            Place place = new Place(x, y, placeId, services);
-            places.add(place);
+            Place place = new Place(x, y, 1, services);
+            map.add(place);
         }
-        return places;
     }
 
     public void start() {
         System.out.println("Loading...");
-        for (int i = 0; i < 1000; i++) {
-            List<Place> places = generateRandomData(100000);
-            Iterator<Place> placesIterator = places.iterator();
-            while (placesIterator.hasNext()) {
-                Place place = placesIterator.next();
-                map.add(place);
-            }
-        }
-        System.out.println(map.getHighestPlaceId());
+        generateRandomData(10000000);
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
 
@@ -124,19 +113,7 @@ public class SystemMenu {
         System.out.println("Enter the ID of the place you want to edit: ");
         int placeId = scanner.nextInt();
         scanner.nextLine();
-        Place placeToEdit = null;
-
-        Set<Place> allPlaces = map.getAllPlaces();
-        Iterator<Place> iterator = allPlaces.iterator();
-
-        while (iterator.hasNext()) {
-            Place place = iterator.next();
-            if (place.getId() == placeId) {
-                placeToEdit = place;
-                break;
-            }
-        }
-
+        Place placeToEdit = map.getPlaceById(placeId);
 
         if (placeToEdit == null) {
             System.out.println("Place with ID " + placeId + " not found.");
@@ -173,18 +150,7 @@ public class SystemMenu {
         System.out.println("Enter the ID of the place you want to remove: ");
         int placeId = scanner.nextInt();
         scanner.nextLine();
-        Place placeToRemove = null;
-
-        Set<Place> allPlaces = map.getAllPlaces();
-        Iterator<Place> iterator = allPlaces.iterator();
-
-        while (iterator.hasNext()) {
-            Place place = iterator.next();
-            if (place.getId() == placeId) {
-                placeToRemove = place;
-                break;
-            }
-        }
+        Place placeToRemove = map.getPlaceById(placeId);
 
         if (placeToRemove == null) {
             System.out.println("Place with ID " + placeId + " not found.");
@@ -242,20 +208,7 @@ public class SystemMenu {
         System.out.println("Enter the ID of the place you want to search: ");
         int placeId = sc.nextInt();
         sc.nextLine();
-        Place placeToFind = null;
-
-        Set<Place> allPlaces = map.getAllPlaces();
-        Iterator<Place> iterator = allPlaces.iterator();
-
-        while (iterator.hasNext()) {
-            Place place = iterator.next();
-            if (place.getId() == placeId) {
-                placeToFind = place;
-                break;
-            }
-        }
-
-
+        Place placeToFind = map.getPlaceById(placeId);
         if (placeToFind == null) {
             System.out.println("Place with ID " + placeId + " not found.");
             return;

@@ -2,6 +2,7 @@ package Database.DataStructure;
 import Database.Place;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.io.Serial;
 
@@ -14,9 +15,7 @@ public class QuadTree implements Serializable {
     private final Node root;
     public Set<Place> searchResult;
     public Set<Node> nodeResult;
-
     private int placeNum;
-    private int testNum;
 
     public QuadTree(double x, double y, double width, double height, int capacity) {
         this.capacity = capacity;
@@ -28,14 +27,6 @@ public class QuadTree implements Serializable {
         return placeNum;
     }
 
-    public Node searchNode(Node node, Place place) {
-        if (node.places != null) {
-            return node;
-        } else {
-            searchNode(node.children[calculatePosition(place, node)],place );
-        }
-        return null;
-    }
 
     public int calculatePosition(Place place, Node node) {
         // North
@@ -68,6 +59,7 @@ public class QuadTree implements Serializable {
         }
         if (node.places != null) {
             if (node.places.size() < capacity ) {
+                place.setPlaceId(placeNum + 1);
                 node.places.add(place);
                 placeNum++;
             }
@@ -75,9 +67,7 @@ public class QuadTree implements Serializable {
                 split(node);
             }
         } else {
-            insert(searchNode(node, place), place);
-            placeNum++;
-
+            insert(node.children[calculatePosition(place, node)], place);
         }
     }
 
@@ -94,7 +84,7 @@ public class QuadTree implements Serializable {
 
         // Transfer place to children
         Set<Place> places = node.places;
-        node.places = new Set<>();
+        node.places = null;
 
         Iterator<Place> placeIterator = places.iterator();
         while (placeIterator.hasNext()) {
@@ -103,22 +93,7 @@ public class QuadTree implements Serializable {
         }
     }
 
-    public Set<Node> getBoundedNodes(double x, double y, double width, double height) {
-        this.nodeResult = new Set<>();
-        getBoundedNodes(root, x, y, width, height);
-        return this.nodeResult;
-    }
 
-    private void getBoundedNodes(Node node, double x, double y, double width, double height) {
-        if (node.x >= x && node.x < x + width && node.y >= y && node.y < y + height) {
-            nodeResult.add(node);
-        }
-        if (node.children != null) {
-            for (int i = 0; i < 4; i++) {
-                getAllPlaces(node.children[i]);
-            }
-        }
-    }
     public Set<Node> getPartiallyContainedNodes(double x, double y, double width, double height) {
         this.nodeResult = new Set<>();
         findPartiallyContainedNodes(root, x, y, width, height);
@@ -139,25 +114,34 @@ public class QuadTree implements Serializable {
     }
 
 
-    public Set<Place> getAllPlaces(){
-        this.searchResult = new Set<>();
-        getAllPlaces(root);
-        return this.searchResult;
+    public Set<Place> getPlaceById(int id) {
+        searchResult = new Set<>();
+        getPlaceById(root, id);
+        return searchResult;
     }
 
-    private void getAllPlaces(Node node) {
+    public void getPlaceById(Node node, int id) {
+        if (node == null) {
+            return;
+        }
+
         if (node.places != null) {
             Iterator<Place> placeIterator = node.places.iterator();
             while (placeIterator.hasNext()) {
                 Place place = placeIterator.next();
-                this.searchResult.add(place);
+                if (place.getId() == id) {
+                    searchResult.add(place);
+                    return;
+                }
             }
         } else {
             for (int i = 0; i < 4; i++) {
-                getAllPlaces(node.children[i]);
+                getPlaceById(node.children[i], id);
             }
         }
     }
+
+
 
     public Set<Place> search(double x, double y, double width, double height, String serviceType, int maxResults) {
         this.searchResult = new Set<>();
@@ -187,70 +171,62 @@ public class QuadTree implements Serializable {
                 if (node.children[i].intersects(x, y, width, height)) {
                     search(node.children[i], x, y, width, height, serviceType, maxResults);
                 }
-            }
-        }
-    }
-
-
-    public void reArrangePlaces() {
-        reArrangePlaces(root);
-    }
-
-    public void reArrangePlaces(Node node){
-        if (node != null) {
-            if (node.places != null){
-                node.reArrangePlaces();
-            }
-            for (int i = 0; i < 4; i++) {
-                reArrangePlaces(node.children[i]);
-            }
-        }
-    }
-
-    public boolean remove(Place place) {
-        return remove(root, place);
-    }
-
-    private boolean remove(Node node, Place place) {
-        if (node == null) {
-            return false;
-        }
-
-        // Check if the node contains the place
-        if (node.contains(place)) {
-            // If it's a leaf node, remove the place from the node's places set
-            if (node.places != null && node.places.contains(place)) {
-                node.places.remove(place);
-                return true;
-            } else {
-                // Otherwise, recursively remove from children
-                for (int i = 0; i < 4; i++) {
-                    if (remove(node.children[i], place)) {
-                        // If a child node was removed, check if the node needs to be merged
-                        if (shouldMerge(node)) {
-                            merge(node);
-                        }
-                        return true;
-                    }
-//                    return true;
+                if (this.searchResult.size() == maxResults) {
+                    return;
                 }
             }
         }
-        return false;
     }
 
-    private boolean shouldMerge(Node node) {
-        for (int i = 0; i < 4; i++) {
-            if(node.children[i].places.size() != 0) {
-                return false;
+
+    public void remove(Place place) {
+        remove(root, place);
+    }
+
+    private void remove(Node node, Place place) {
+        if (node == null) {
+            return;
+        }
+        // Check if the node contains the place
+        // If it's a leaf node, remove the place from the node's places set
+        if (node.places != null) {
+            if (node.places.contains(place)) {
+                node.places.remove(place);
+                System.out.println("Successfully removed");
+            }
+        } else {
+            // Otherwise, recursively remove from children
+            remove(node.children[calculatePosition(place, node)], place);
+            // If a child node was removed, check if the node needs to be merged
+            if (node.places != null) {
+                if (shouldMerge(node)) {
+                    merge(node);
+                }
             }
         }
-        return true;
+
     }
 
+    // If total number of places returns to the capacity, merge
+    private boolean shouldMerge(Node node) {
+        int totalSize = 0;
+        for (int i = 0; i < 4; i++) {
+            totalSize += node.children[i].places.size();
+        }
+        if (totalSize <= capacity) {
+            return true;
+        }
+        return false;
+    }
+    // Merge the child nodes to the parents
     private void merge(Node node) {
         for (int i = 0; i < 4; i++) {
             node.children[i] = null;
+            Iterator<Place> placeIterator = node.places.iterator();
+            while (placeIterator.hasNext()) {
+                Place place = placeIterator.next();
+                node.places.add(place);
+            }
         }
     }
 

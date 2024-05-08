@@ -30,6 +30,10 @@ public class Place implements Serializable{
         return y;
     }
 
+    public void setPlaceId(int placeId) {
+        this.placeId = placeId;
+    }
+
     public Set<String> getServices() {
         return services;
     }
