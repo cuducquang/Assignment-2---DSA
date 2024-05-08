@@ -63,15 +63,7 @@ public class Map2D {
     }
 
     public int getHighestPlaceId() {
-        int highestPlaceId = 0;
-        Iterator<Place> placeIterator = quadTree.getAllPlaces().iterator();
-        while (placeIterator.hasNext()) {
-            int currentPlaceId = placeIterator.next().getId(); // Assuming Place has an ID attribute
-            if (currentPlaceId > highestPlaceId) {
-                highestPlaceId = currentPlaceId;
-            }
-        }
-        return highestPlaceId;
+        return quadTree.getPlaceNum();
     }
 
     public Set<Place> getAllPlaces() {

@@ -13,7 +13,7 @@ import java.util.Iterator;
 public class SystemMenu {
     int mapWidth = 10000000;
     int mapHeight = 10000000;
-    int capacity = 1000;
+    int capacity = 100;
     Map2D map = new Map2D(mapWidth, mapHeight, capacity);
 
     public void displayMenu() {
@@ -31,7 +31,7 @@ public class SystemMenu {
         List<String> serviceTypes = Arrays.asList("ATM", "Restaurant", "Hospital", "Gas Station", "Coffee Shop", "Pharmacy", "Park", "School", "Supermarket", "Library");
         Random rand = new Random();
         for (int i = 0; i < numberOfPlaces; i++) {
-            int placeId = i + 1;
+            int placeId = map.getHighestPlaceId() + 1;
             double x = rand.nextDouble() * mapWidth;
             double y = rand.nextDouble() * mapHeight;
             int numberOfServices = rand.nextInt(5) + 1;
@@ -48,7 +48,8 @@ public class SystemMenu {
     }
 
     public void start() {
-        for (int i = 0; i < 1; i++) {
+        System.out.println("Loading...");
+        for (int i = 0; i < 1000; i++) {
             List<Place> places = generateRandomData(100000);
             Iterator<Place> placesIterator = places.iterator();
             while (placesIterator.hasNext()) {
@@ -56,7 +57,7 @@ public class SystemMenu {
                 map.add(place);
             }
         }
-
+        System.out.println(map.getHighestPlaceId());
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
 

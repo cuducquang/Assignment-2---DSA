@@ -15,9 +15,47 @@ public class QuadTree implements Serializable {
     public Set<Place> searchResult;
     public Set<Node> nodeResult;
 
+    private int placeNum;
+    private int testNum;
+
     public QuadTree(double x, double y, double width, double height, int capacity) {
         this.capacity = capacity;
         this.root = new Node(x, y, width, height, 0);
+        this.placeNum = 0;
+    }
+
+    public int getPlaceNum() {
+        return placeNum;
+    }
+
+    public Node searchNode(Node node, Place place) {
+        if (node.places != null) {
+            return node;
+        } else {
+            searchNode(node.children[calculatePosition(place, node)],place );
+        }
+        return null;
+    }
+
+    public int calculatePosition(Place place, Node node) {
+        // North
+        if (Math.abs(node.getY() - place.getY()) < node.getHeight()/2) {
+            // West
+            if (Math.abs(node.getX() - place.getX()) < node.getWidth()) {
+                return 0;
+            } else {
+                // East
+                return 1;
+            }
+        } else {
+            // South
+            if (Math.abs(node.getX() - place.getX()) < node.getWidth()) {
+                return 2;
+            } else {
+                // East
+                return 3;
+            }
+        }
     }
 
     public void insert(Place place) {
@@ -25,23 +63,21 @@ public class QuadTree implements Serializable {
     }
 
     private void insert(Node node, Place place) {
+        if (node == null) {
+            return;
+        }
         if (node.places != null) {
-            if (node.places.size() < capacity || node.depth == 100) {
+            if (node.places.size() < capacity ) {
                 node.places.add(place);
-                return;
+                placeNum++;
             }
-
-            if (node.children[0] == null) {
+            if (node.places.size() >= capacity) {
                 split(node);
             }
         } else {
-            for (int i = 0; i < 4; i++) {
-//                System.out.println(node.children[i].contains(place));
-                if (node.children[i].contains(place)) {
-                    insert(node.children[i], place);
-                    return;
-                }
-            }
+            insert(searchNode(node, place), place);
+            placeNum++;
+
         }
     }
 
@@ -51,24 +87,19 @@ public class QuadTree implements Serializable {
         double x = node.x;
         double y = node.y;
 
-        node.children[0] = new Node(x + subWidth, y, subWidth, subHeight, node.depth + 1);
-        node.children[1] = new Node(x, y, subWidth, subHeight, node.depth + 1);
+        node.children[0] = new Node(x, y, subWidth, subHeight, node.depth + 1);
+        node.children[1] = new Node(x + subWidth, y, subWidth, subHeight, node.depth + 1);
         node.children[2] = new Node(x, y + subHeight, subWidth, subHeight, node.depth + 1);
         node.children[3] = new Node(x + subWidth, y + subHeight, subWidth, subHeight, node.depth + 1);
 
         // Transfer place to children
         Set<Place> places = node.places;
-        node.places = null;
+        node.places = new Set<>();
 
         Iterator<Place> placeIterator = places.iterator();
         while (placeIterator.hasNext()) {
             Place place = placeIterator.next();
-            for (int i = 0; i < 4; i++) {
-                if (node.children[i].contains(place)) {
-                    node.children[i].insert(place);
-                    break;
-                }
-            }
+            node.children[calculatePosition(place, node)].insert(place);
         }
     }
 
@@ -249,6 +280,22 @@ public class QuadTree implements Serializable {
             double x = place.getX();
             double y = place.getY();
             return (x >= this.x && x < this.x + width && y >= this.y && y < this.y + height);
+        }
+
+        public double getX(){
+            return x;
+        }
+
+        public double getY(){
+            return y;
+        }
+
+        public double getWidth() {
+            return width;
+        }
+
+        public double getHeight() {
+            return height;
         }
 
         public void removePlace(Place place) {
