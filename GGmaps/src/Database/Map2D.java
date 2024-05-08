@@ -3,6 +3,9 @@ package Database;
 import Database.DataStructure.HashMap;
 import Database.DataStructure.QuadTree;
 import Database.DataStructure.Set;
+import Database.DataStructure.List;
+import Database.Methods.PlaceBinarySearch;
+import Database.Methods.PlaceQuickSort;
 
 import java.io.*;
 import java.util.Iterator;
@@ -75,47 +78,67 @@ public class Map2D {
     }
 
 
-    public Set<Place> searchByCurrentPosition(double centerX, double centerY, double radius, String serviceType) {
+    public Set<Place> searchByCurrentPosition(double centerX, double centerY, double width, double height, String serviceType, int maxResults) {
         // Calculate the bounding rectangle based on the given center (X, Y) and radius
         Set<Place> result = new Set<>();
-        double x1 = centerX - radius;
-        double y1 = centerY + radius;
-        double width = 2 * radius;
-        double height = 2 * radius;
-
+        double topLeftX = centerX - width / 2;
+        double topLeftY = centerY + height / 2;
+        int mapMaxRange = 10000000;
+        if (topLeftX < 0 || topLeftY < 0 || topLeftX > mapMaxRange || topLeftY > mapMaxRange || topLeftX + width > mapMaxRange || topLeftY - height < 0) {
+            System.out.println("Error: The selected area are out of bounds. Please try again within the maximum bound of 1e8 x 1e8.");
+            return result;
+        }
         // Use the QuadTree to search for nodes that intersect this bounding rectangle
-        Set<QuadTree.Node> boundedNodes = quadTree.getPartiallyContainedNodes(x1, y1, width, height);
+        Set<QuadTree.Node> boundedNodes = quadTree.getPartiallyContainedNodes(topLeftX, topLeftY, width, height);
 
         int validLocations = 0;
-        int maxResults = 50; // Define the maximum number of results
-
+        int numOfLocationsProcessed = 0;
         Iterator<QuadTree.Node> iterator = boundedNodes.iterator();
-
-
         while (iterator.hasNext()) {
+
+            if (validLocations == maxResults) {
+                break;
+            }
+
             QuadTree.Node node = iterator.next();
             Set<Place> places = node.getPlaces();
             if (places == null) {
                 continue;
             }
-            System.out.println("x1: " + x1+" y1: "+y1+" width: "+width+" height: "+height);
-            Iterator<Place> placeIterator = places.iterator();
-            while(placeIterator.hasNext()) {
-                Place place = placeIterator.next();
-                if (place.getX() >= x1 && place.getX() <= x1 + width &&
-                        place.getY() >= y1 && place.getY() <= y1 + height &&
+
+//          Metric for evaluation
+            numOfLocationsProcessed += places.size();
+
+//          Create a list of places and sort by x coordinates
+            List<Place> sortedList = places.toList();
+            PlaceQuickSort.quickSort(sortedList);
+//          Print list for testing
+//          PlaceQuickSort.printList(sortedList);
+//          System.out.println("topLeftX: " + topLeftX + " topLeftY: " + topLeftY + " width: " + width + " height: " + height);
+
+//            Find the starting point in the list by X
+            int start = PlaceBinarySearch.binarySearchStart(sortedList, topLeftX);
+            int end = PlaceBinarySearch.binarySearchEnd(sortedList, topLeftY);
+
+//            If there are no nodes in the rectangle
+            if (start == -1 || end == -1) {
+                continue;
+            }
+
+            for (int i = start; i <= end; i++) {
+                if (validLocations >= maxResults) {
+                    break; // Stop if max results reached
+                }
+                Place place = sortedList.get(i);
+                if (place.getX() >= topLeftX && place.getX() <= topLeftX + width &&
+                        place.getY() <= topLeftY && place.getY() >= topLeftY - height &&
                         place.haveService(serviceType)) {
                     validLocations++;
                     result.add(place);
-                    if (validLocations >= maxResults) {
-                        break; // Stop if max results reached
-                    }
                 }
             }
-            if (validLocations == maxResults) {
-                break;
-            }
         }
+        System.out.println("Processed " + numOfLocationsProcessed + " places.");
         return result;
     }
 }

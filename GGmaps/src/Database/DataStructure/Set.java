@@ -40,6 +40,13 @@ public class Set<E> implements Serializable {
         this.map = newMap;
     }
 
+    public List<E> toList() {
+        List<E> list = new List<E>();
+        for (E element : map.getKeys()) {
+            list.add(element);
+        }
+        return list;
+    }
 
     @Override
     public String toString() {
@@ -78,6 +85,9 @@ public class Set<E> implements Serializable {
         };
     }
 
+//    public static void main(String[] args) {
+//        Set<String> set = new Set<String>();
+//    }
 
 }
 

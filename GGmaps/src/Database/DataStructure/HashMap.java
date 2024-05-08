@@ -64,6 +64,18 @@ public class HashMap<K, V> implements Serializable {
         return get(key) != null;
     }
 
+    public List<K> getKeys() {
+
+        List<K> keys = new List<K>();
+        for (Entry<K, V> entry : table) {
+            while (entry != null) {
+                keys.add(entry.key);
+                entry = entry.next;
+            }
+        }
+        return keys;
+    }
+
     public int size() {
         return size;
     }
