@@ -13,7 +13,6 @@ import java.util.Iterator;
 public class SystemMenu {
     int mapWidth = 10000000;
     int mapHeight = 10000000;
-    int numberOfPlaces = 100;
     int capacity = 1000;
     Map2D map = new Map2D(mapWidth, mapHeight, capacity);
 
@@ -58,8 +57,6 @@ public class SystemMenu {
             }
         }
 
-        map.saveData("places_data.dat");
-        map.loadData();
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
 
@@ -118,7 +115,8 @@ public class SystemMenu {
 
         Place place = new Place(x, y, placeId, services);
         map.add(place);
-        map.saveData("places_data.dat");
+        System.out.println(place.toString());
+        System.out.println("Add place successfully");
     }
 
     public void editPlace(Scanner scanner) {
@@ -166,8 +164,8 @@ public class SystemMenu {
         }
 
         map.edit(placeToEdit, newServices);
+        System.out.println(placeToEdit.toString());
         System.out.println("Place edited successfully.");
-        map.saveData("places_data.dat");
     }
 
     public void removePlace(Scanner scanner) {
@@ -199,7 +197,6 @@ public class SystemMenu {
 
         if (confirmation.equalsIgnoreCase("yes")) {
             map.remove(placeToRemove);
-            map.saveData("places_data.dat");
         } else {
             System.out.println("Operation canceled.");
         }
@@ -211,7 +208,7 @@ public class SystemMenu {
         Scanner sc = new Scanner(System.in);
         int choice = 0;
         while (choice != 4) {
-            System.out.println("1. Search by place name");
+            System.out.println("1. Search by place ID");
             System.out.println("2. Search by service type");
             System.out.println("3. Search by current position");
             System.out.println("4. Return to menu");
@@ -222,7 +219,7 @@ public class SystemMenu {
 
             switch (choice) {
                 case 1:
-//                  searchByPlaceName();
+                    searchByPlaceID(sc);
                     break;
                 case 2:
                     searchByServiceType(sc);
@@ -238,6 +235,34 @@ public class SystemMenu {
                     break;
             }
         }
+    }
+
+    public void searchByPlaceID(Scanner sc) {
+        System.out.println("Enter the ID of the place you want to search: ");
+        int placeId = sc.nextInt();
+        sc.nextLine();
+        Place placeToFind = null;
+
+        Set<Place> allPlaces = map.getAllPlaces();
+        Iterator<Place> iterator = allPlaces.iterator();
+
+        while (iterator.hasNext()) {
+            Place place = iterator.next();
+            if (place.getId() == placeId) {
+                placeToFind = place;
+                break;
+            }
+        }
+
+
+        if (placeToFind == null) {
+            System.out.println("Place with ID " + placeId + " not found.");
+            return;
+        }
+
+        System.out.println("The place you want to find: " + placeToFind);
+
+
     }
 
     public void searchByServiceType(Scanner sc) {

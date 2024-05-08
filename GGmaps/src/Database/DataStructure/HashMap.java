@@ -91,7 +91,7 @@ public class HashMap<K, V> implements Serializable {
     public V remove(K key) {
         if (key == null)
             return null; // Null keys not supported
-        int index = Math.abs(getIndex(key));
+        int index = getIndex(key);
         Entry<K, V> entry = table[index];
         Entry<K, V> prev = null;
         while (entry != null) {

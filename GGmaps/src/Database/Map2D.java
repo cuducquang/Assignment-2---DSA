@@ -83,34 +83,6 @@ public class Map2D {
     }
 
 
-    // Load all data
-    public void loadData() {
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
-            QuadTree loadedQuadTree = (QuadTree) in.readObject();
-            this.quadTree = loadedQuadTree;
-            quadTree.reArrangePlaces();
-        } catch (EOFException eofException) {
-            // Handle EOFException separately
-            System.err.println("Unexpected end of file: " + filename);
-            eofException.printStackTrace();
-        } catch (IOException | ClassNotFoundException e) {
-            // Handle other exceptions
-            e.printStackTrace();
-        }
-    }
-
-
-
-    public void saveData(String filename) {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
-            out.writeObject(quadTree);
-            System.out.println("Data saved successfully to: " + filename);
-        } catch (IOException e) {
-            System.err.println("Error saving data to file: " + filename);
-            e.printStackTrace();
-        }
-    }
-
     public Set<Place> searchByCurrentPosition(double centerX, double centerY, double radius, String serviceType) {
         // Calculate the bounding rectangle based on the given center (X, Y) and radius
         Set<Place> result = new Set<>();

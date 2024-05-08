@@ -12,7 +12,6 @@ public class Place implements Serializable{
     private static final long serialVersionUID = 2039612322674750625L;
     private final double x;
     private final double y;
-    private String placeName;
     private int placeId;
     private Set<String> services;
 
@@ -21,7 +20,6 @@ public class Place implements Serializable{
         this.y = y;
         this.placeId =placeId;
         this.services = services;
-        this.placeName = null;
     }
 
     public double getX() {
@@ -32,20 +30,12 @@ public class Place implements Serializable{
         return y;
     }
 
-    public String getPlaceName() {
-        return placeName;
-    }
-
     public Set<String> getServices() {
         return services;
     }
 
     public void setServices(Set<String> services) {
         this.services = services;
-    }
-
-    public void setPlaceName(String placeName) {
-        this.placeName = placeName;
     }
 
     public boolean haveService(String serviceType) {
@@ -72,17 +62,18 @@ public class Place implements Serializable{
         return sb.toString();
     }
 
+
+    public int getId() {
+        return placeId;
+    }
+
     @Override
     public String toString() {
         return "Place{" +
                 "x=" + x +
                 ", y=" + y +
-                ", placeName='" + placeName + '\'' +
-                ", services=" + services.toString() +
+                ", placeId=" + placeId +
+                ", services=" + services +
                 '}';
-    }
-
-    public int getId() {
-        return placeId;
     }
 }
