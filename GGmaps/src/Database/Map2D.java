@@ -118,7 +118,7 @@ public class Map2D {
 
 //            Find the starting point in the list by X
             int start = PlaceBinarySearch.binarySearchStart(sortedList, topLeftX);
-            int end = PlaceBinarySearch.binarySearchEnd(sortedList, topLeftY);
+            int end = PlaceBinarySearch.binarySearchEnd(sortedList, topLeftX + width);
 
 //            If there are no nodes in the rectangle
             if (start == -1 || end == -1) {
