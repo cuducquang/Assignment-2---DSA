@@ -1,13 +1,9 @@
 package Database.DataStructure;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class Set<E> implements Serializable {
-    @Serial
-    private static final long serialVersionUID = -1453405297204316207L;
+public class Set<E> {
     private HashMap<E, Object> map;
 
     public Set() {
@@ -28,10 +24,6 @@ public class Set<E> implements Serializable {
 
     public boolean contains(E element) {
         return map.containsKey(element);
-    }
-
-    public HashMap<E, Object> getValues() {
-        return map;
     }
 
     public void remove(E element) {

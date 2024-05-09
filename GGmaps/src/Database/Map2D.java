@@ -7,14 +7,11 @@ import Database.DataStructure.List;
 import Database.Methods.PlaceBinarySearch;
 import Database.Methods.PlaceQuickSort;
 
-import java.io.*;
 import java.util.Iterator;
 
 public class Map2D {
     private QuadTree quadTree;
     private final HashMap<String, Set<Place>> serviceIndex;
-
-    private final String filename = "places_data.dat";
 
     public Map2D(double width, double height, int capacity) {
         this.serviceIndex = new HashMap<>();

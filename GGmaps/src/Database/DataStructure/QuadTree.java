@@ -1,16 +1,9 @@
 package Database.DataStructure;
+
 import Database.Place;
-
-import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.io.Serial;
 
-
-
-public class QuadTree implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 5708090990685126726L;
+public class QuadTree {
     private final int capacity;
     private final Node root;
     public Set<Place> searchResult;
@@ -234,9 +227,7 @@ public class QuadTree implements Serializable {
     }
 
 
-    public static class Node implements Serializable{
-        @Serial
-        private static final long serialVersionUID = -7578953917976019431L;
+    public static class Node{
         private final double x;
         private final double y;
         private final double width;
@@ -255,12 +246,6 @@ public class QuadTree implements Serializable {
             this.children = new Node[4];
         }
 
-        public boolean contains(Place place) {
-            double x = place.getX();
-            double y = place.getY();
-            return (x >= this.x && x < this.x + width && y >= this.y && y < this.y + height);
-        }
-
         public double getX(){
             return x;
         }
@@ -275,16 +260,6 @@ public class QuadTree implements Serializable {
 
         public double getHeight() {
             return height;
-        }
-
-        public void removePlace(Place place) {
-            this.places.remove(place);
-        }
-
-        public void reArrangePlaces() {
-            Set<Place> newPlaces = this.places;
-            newPlaces.reArrange();
-           this.places = newPlaces;
         }
 
         public boolean intersects(double x, double y, double width, double height) {

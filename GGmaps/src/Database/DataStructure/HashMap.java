@@ -1,16 +1,11 @@
 package Database.DataStructure;
 
-import Database.Place;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class HashMap<K, V> implements Serializable {
+public class HashMap<K, V> {
 
-    @Serial
-    private static final long serialVersionUID = -1969132081001806847L;
     private static final int CAPACITY = 16;
     private Entry<K, V>[] table;
     private int size;
@@ -60,9 +55,6 @@ public class HashMap<K, V> implements Serializable {
         return null;
     }
 
-//    public boolean containsKey(K key) {
-//        return get(key) != null;
-//    }
 
     public Entry<K, V> has(K key) {
         if (key == null) {
@@ -111,12 +103,6 @@ public class HashMap<K, V> implements Serializable {
         // Replace the original map with the new one
         this.table = newMap.table;
         this.size = newMap.size;
-    }
-
-
-    public V getOrDefault(K key, V defaultValue) {
-        V value = get(key);
-        return value != null ? value : defaultValue;
     }
 
     public V remove(K key) {
@@ -222,10 +208,7 @@ public class HashMap<K, V> implements Serializable {
 
 
 
-    public static class Entry<K, V> implements Serializable{
-        @Serial
-        private static final long serialVersionUID = -8520682291953982672L;
-
+    public static class Entry<K, V>{
         K key;
         V value;
         Entry<K, V> next;

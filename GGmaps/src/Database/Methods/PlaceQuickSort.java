@@ -64,36 +64,4 @@ public class PlaceQuickSort {
             quickSort(list, pi + 1, high);
         }
     }
-    // To print sorted list
-    public static void printList(List<Place> list)
-    {
-        for (int i = 0; i < list.size(); i++) {
-            System.out.println(list.get(i) + " ");
-        }
-    }
-
-    // Driver Code
-//    public static void main(String[] args)
-//    {
-//        Place place1 = new Place(2, 0,3234,null);
-//        Place place2 = new Place(3, 0,3234,null);
-//        Place place3 = new Place(9, 0,3234,null);
-//        Place place4 = new Place(12, 0,3234,null);
-//        Place place5 = new Place(4, 0,3234,null);
-//        Place place6 = new Place(0, 0,3234,null);
-//
-//        List<Place> list = new List<>();
-//        list.add(place1);
-//        list.add(place2);
-//        list.add(place3);
-//        list.add(place4);
-//        list.add(place5);
-//        list.add(place6);
-//
-//
-//        // Function call
-//        quickSort(list);
-//        System.out.println("Sorted list:");
-//        printList(list);
-//    }
 }
