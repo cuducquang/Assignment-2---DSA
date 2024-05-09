@@ -31,7 +31,6 @@ public class SystemMenu {
         List<String> serviceTypes = Arrays.asList("ATM", "Restaurant", "Hospital", "Gas Station", "Coffee Shop", "Pharmacy", "Park", "School", "Supermarket", "Library");
         Random rand = new Random();
         for (int i = 0; i < numberOfPlaces; i++) {
-            int placeId = i + 1;
             double x = rand.nextDouble() * mapWidth;
             double y = rand.nextDouble() * mapHeight;
             int numberOfServices = rand.nextInt(5) + 1;
@@ -41,7 +40,7 @@ public class SystemMenu {
                 services.add(serviceTypes.get(randomIndex));
             }
 
-            Place place = new Place(x, y, placeId, services);
+            Place place = new Place(x, y, 0, services);
             places.add(place);
         }
         return places;
@@ -65,22 +64,6 @@ public class SystemMenu {
         Set<String> services = new Set<>();
         services.add("ATM");
 
-        Place place1 = new Place(303, 0,100001,services);
-        Place place2 = new Place(122, 0,100002,services);
-        Place place3 = new Place(213, 0,100003,services);
-        Place place4 = new Place(607, 0,100004,services);
-        Place place5 = new Place(530, 0,100005,services);
-        Place place6 = new Place(443, 0,100006,services);
-
-        map.add(place1);
-        map.add(place2);
-        map.add(place3);
-        map.add(place4);
-        map.add(place5);
-        map.add(place6);
-        System.out.println();
-        System.out.println("Generated data");
-        System.out.println(map.getHighestPlaceId());
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
 

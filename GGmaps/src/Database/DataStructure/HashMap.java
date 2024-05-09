@@ -60,9 +60,9 @@ public class HashMap<K, V> implements Serializable {
         return null;
     }
 
-    public boolean containsKey(K key) {
-        return get(key) != null;
-    }
+//    public boolean containsKey(K key) {
+//        return get(key) != null;
+//    }
 
     public Entry<K, V> has(K key) {
         if (key == null) {
@@ -79,9 +79,9 @@ public class HashMap<K, V> implements Serializable {
         return null;
     }
 
-//    public boolean containsKey(K key) {
-//        return has(key) != null;
-//    }
+    public boolean containsKey(K key) {
+        return has(key) != null;
+    }
 
     public List<K> getKeys() {
 

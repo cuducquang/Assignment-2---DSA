@@ -59,9 +59,12 @@ public class QuadTree implements Serializable {
         }
         if (node.places != null) {
             if (node.places.size() < capacity ) {
-                place.setPlaceId(placeNum + 1);
+                if (place.getId() == 0) {
+                    place.setPlaceId(placeNum + 1);
+                    placeNum++;
+                }
                 node.places.add(place);
-                placeNum++;
+
             }
             if (node.places.size() >= capacity) {
                 split(node);
