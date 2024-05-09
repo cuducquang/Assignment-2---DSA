@@ -11,10 +11,7 @@ import java.util.Iterator;
 
 public class Map2D {
     private QuadTree quadTree;
-    private final HashMap<String, Set<Place>> serviceIndex;
-
     public Map2D(double width, double height, int capacity) {
-        this.serviceIndex = new HashMap<>();
         this.quadTree = new QuadTree(0, 0, width, height, capacity);
     }
 
@@ -64,8 +61,8 @@ public class Map2D {
         Set<Place> result = new Set<>();
         double topLeftX = centerX - width / 2;
         double topLeftY = centerY + height / 2;
-        int mapMaxRange = 10000000;
-//        System.out.println("topLeftX: " + topLeftX + " topLeftY: " + topLeftY + " width: " + width + " height: " + height);
+        double mapMaxRange = 100000000;
+        System.out.println("topLeftX: " + topLeftX + " topLeftY: " + topLeftY + " width: " + width + " height: " + height);
 
         if (topLeftX < 0 || topLeftY < 0 || topLeftX > mapMaxRange || topLeftY > mapMaxRange || topLeftX + width > mapMaxRange || topLeftY - height < 0) {
             System.out.println("Error: The selected area are out of bounds. Please try again within the maximum bound of 1e8 x 1e8.");

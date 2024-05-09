@@ -11,10 +11,10 @@ import java.util.Scanner;
 import java.util.Iterator;
 
 public class SystemMenu {
-    int mapWidth = 10000000;
-    int mapHeight = 10000000;
-    int capacity = 100;
-    Map2D map = new Map2D(mapWidth, mapHeight, capacity);
+    final int mapWidth = 10000000;
+    final int mapHeight = 10000000;
+    final int capacity = 100;
+    final Map2D map = new Map2D(mapWidth, mapHeight, capacity);
 
     public void displayMenu() {
         System.out.println("-------------Welcome to the Map 2D-------------------");
@@ -48,9 +48,9 @@ public class SystemMenu {
 
     public void start() {
         System.out.print("Loading");
-        int multipler = 1000;
-        for (int i = 0; i < multipler; i++) {
-            if (i == multipler /5  || i == multipler * 2 /5  || i == multipler * 3 /5 || i == multipler * 4 /5 || i == multipler * 5 /5 - 1) {
+        int multiplier = 1000;
+        for (int i = 0; i < multiplier; i++) {
+            if (i == multiplier /5  || i == multiplier * 2 /5  || i == multiplier * 3 /5 || i == multiplier * 4 /5 || i == multiplier * 5 /5 - 1) {
                 System.out.print(".");
             }
             List<Place> places = generateRandomData(10000);
@@ -209,7 +209,7 @@ public class SystemMenu {
                     searchByServiceType(sc);
                     break;
                 case 3:
-                    performCurrentPositionSearch(sc);
+                    searchByCurrentPosition(sc);
                     break;
                 case 4:
                     System.out.println("Return to menu");
@@ -250,22 +250,22 @@ public class SystemMenu {
         }
     }
 
-    public void performCurrentPositionSearch(Scanner scanner) {
+    public void searchByCurrentPosition(Scanner sc) {
         System.out.println("Enter your current position by x: ");
-        double centerX = scanner.nextDouble();
+        double centerX = sc.nextDouble();
         System.out.println("Enter your current position by y: ");
-        double centerY = scanner.nextDouble();
+        double centerY = sc.nextDouble();
         System.out.println("Enter the width of the area you want to search: ");
-        double width = scanner.nextDouble();
+        double width = sc.nextDouble();
         System.out.println("Enter the height of the area you want to search: ");
-        double height = scanner.nextDouble();
-        scanner.nextLine();  // Consume the remaining newline after numbers
+        double height = sc.nextDouble();
+        sc.nextLine();  // Consume the remaining newline after numbers
         System.out.println("Enter the service type you want to search: ");
         List<String> serviceTypes = Arrays.asList("ATM", "Restaurant", "Hospital", "Gas Station", "Coffee Shop", "Pharmacy", "Park", "School", "Supermarket", "Library");
         for (int i = 0; i < serviceTypes.size(); i++) {
             System.out.println(serviceTypes.get(i));
         }
-        String serviceType = scanner.nextLine();
+        String serviceType = sc.nextLine();
 //        System.out.println(centerX + " " +  centerY+ " " + width+ " " + height+ " " + serviceType+ " " + 50);
         Set<Place> results = map.searchByCurrentPosition(centerX, centerY, width, height, serviceType, 50);
         int index = 1;
