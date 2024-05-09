@@ -112,7 +112,6 @@ public class HashMap<K, V> {
         Entry<K, V> entry = table[index];
         Entry<K, V> prev = null;
         while (entry != null) {
-            System.out.println(entry.key.toString());
             if (entry.key.equals(key)) {
                 if (prev == null) {
                     table[index] = entry.next;
