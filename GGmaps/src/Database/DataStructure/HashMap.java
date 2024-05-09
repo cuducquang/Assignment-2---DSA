@@ -40,22 +40,6 @@ public class HashMap<K, V> {
 
     }
 
-    public V get(K key) {
-        if (key == null) {
-            return null; // Null keys not supported
-        }
-        int index = Math.abs(getIndex(key));
-        Entry<K, V> entry = table[index];;
-        while (entry != null) {
-            if (entry.key.equals(key)) {
-                return entry.value;
-            }
-            entry = entry.next;
-        }
-        return null;
-    }
-
-
     public Entry<K, V> has(K key) {
         if (key == null) {
             return null; // Null keys not supported
@@ -130,13 +114,6 @@ public class HashMap<K, V> {
 
     private int getIndex(K key) {
         return Math.abs(key.hashCode() % table.length);
-    }
-
-    public void clear() {
-        for (int i = 0; i < table.length; i++) {
-            table[i] = null;
-        }
-        size = 0;
     }
 
     public Set<Entry<K, V>> entrySet() {

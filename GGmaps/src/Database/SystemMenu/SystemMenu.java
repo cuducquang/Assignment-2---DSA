@@ -53,7 +53,7 @@ public class SystemMenu {
             if (i == multiplier /5  || i == multiplier * 2 /5  || i == multiplier * 3 /5 || i == multiplier * 4 /5 || i == multiplier * 5 /5 - 1) {
                 System.out.print(".");
             }
-            List<Place> places = generateRandomData(10000);
+            List<Place> places = generateRandomData(10000000);
             Iterator<Place> placesIterator = places.iterator();
             while (placesIterator.hasNext()) {
                 Place place = placesIterator.next();
