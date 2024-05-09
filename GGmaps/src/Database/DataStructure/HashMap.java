@@ -60,6 +60,10 @@ public class HashMap<K, V> implements Serializable {
         return null;
     }
 
+    public boolean containsKey(K key) {
+        return get(key) != null;
+    }
+
     public Entry<K, V> has(K key) {
         if (key == null) {
             return null; // Null keys not supported
@@ -75,8 +79,20 @@ public class HashMap<K, V> implements Serializable {
         return null;
     }
 
-    public boolean containsKey(K key) {
-        return has(key) != null;
+//    public boolean containsKey(K key) {
+//        return has(key) != null;
+//    }
+
+    public List<K> getKeys() {
+
+        List<K> keys = new List<K>();
+        for (Entry<K, V> entry : table) {
+            while (entry != null) {
+                keys.add(entry.key);
+                entry = entry.next;
+            }
+        }
+        return keys;
     }
 
     public int size() {

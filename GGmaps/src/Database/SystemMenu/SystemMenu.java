@@ -26,10 +26,12 @@ public class SystemMenu {
         System.out.println("Please enter your choice: ");
     }
 
-    public void generateRandomData(int numberOfPlaces) {
+    public List<Place> generateRandomData(int numberOfPlaces) {
+        List<Place> places = new List<Place>();
         List<String> serviceTypes = Arrays.asList("ATM", "Restaurant", "Hospital", "Gas Station", "Coffee Shop", "Pharmacy", "Park", "School", "Supermarket", "Library");
         Random rand = new Random();
         for (int i = 0; i < numberOfPlaces; i++) {
+            int placeId = i + 1;
             double x = rand.nextDouble() * mapWidth;
             double y = rand.nextDouble() * mapHeight;
             int numberOfServices = rand.nextInt(5) + 1;
@@ -39,14 +41,46 @@ public class SystemMenu {
                 services.add(serviceTypes.get(randomIndex));
             }
 
-            Place place = new Place(x, y, 1, services);
-            map.add(place);
+            Place place = new Place(x, y, placeId, services);
+            places.add(place);
         }
+        return places;
     }
 
     public void start() {
-        System.out.println("Loading...");
-        generateRandomData(10000000);
+        System.out.print("Loading");
+        int multipler = 1000;
+        for (int i = 0; i < multipler; i++) {
+            if (i == multipler /5  || i == multipler * 2 /5  || i == multipler * 3 /5 || i == multipler * 4 /5 || i == multipler * 5 /5 - 1) {
+                System.out.print(".");
+            }
+            List<Place> places = generateRandomData(10000);
+            Iterator<Place> placesIterator = places.iterator();
+            while (placesIterator.hasNext()) {
+                Place place = placesIterator.next();
+                map.add(place);
+            }
+        }
+
+        Set<String> services = new Set<>();
+        services.add("ATM");
+
+        Place place1 = new Place(303, 0,100001,services);
+        Place place2 = new Place(122, 0,100002,services);
+        Place place3 = new Place(213, 0,100003,services);
+        Place place4 = new Place(607, 0,100004,services);
+        Place place5 = new Place(530, 0,100005,services);
+        Place place6 = new Place(443, 0,100006,services);
+
+        map.add(place1);
+        map.add(place2);
+        map.add(place3);
+        map.add(place4);
+        map.add(place5);
+        map.add(place6);
+        System.out.println();
+        System.out.println("Generated data");
+        System.out.println(map.getHighestPlaceId());
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
 
@@ -234,19 +268,35 @@ public class SystemMenu {
     }
 
     public void performCurrentPositionSearch(Scanner scanner) {
-        System.out.println("Enter center X, center Y, radius, and service type for search:");
+        System.out.println("Enter your current position by x: ");
         double centerX = scanner.nextDouble();
+        System.out.println("Enter your current position by y: ");
         double centerY = scanner.nextDouble();
-        double radius = scanner.nextDouble();
+        System.out.println("Enter the width of the area you want to search: ");
+        double width = scanner.nextDouble();
+        System.out.println("Enter the height of the area you want to search: ");
+        double height = scanner.nextDouble();
         scanner.nextLine();  // Consume the remaining newline after numbers
+        System.out.println("Enter the service type you want to search: ");
+        List<String> serviceTypes = Arrays.asList("ATM", "Restaurant", "Hospital", "Gas Station", "Coffee Shop", "Pharmacy", "Park", "School", "Supermarket", "Library");
+        for (int i = 0; i < serviceTypes.size(); i++) {
+            System.out.println(serviceTypes.get(i));
+        }
         String serviceType = scanner.nextLine();
-        Set<Place> results = map.searchByCurrentPosition(centerX, centerY, radius, serviceType);
+//        System.out.println(centerX + " " +  centerY+ " " + width+ " " + height+ " " + serviceType+ " " + 50);
+        Set<Place> results = map.searchByCurrentPosition(centerX, centerY, width, height, serviceType, 50);
         int index = 1;
-        Iterator<Place> iterator = results.iterator();
-        while (iterator.hasNext()) {
-            Place place = iterator.next();
-            System.out.println("Place " + index + ": " + place.toString());
-            index++;
+
+        if (results.size() == 0) {
+            System.out.println("There are no results found.");
+        } else {
+            Iterator<Place> iterator = results.iterator();
+            System.out.println("The place you want to find: ");
+            while (iterator.hasNext()) {
+                Place place = iterator.next();
+                System.out.println("Place " + index + ": " + place.toString());
+                index++;
+            }
         }
     }
 }

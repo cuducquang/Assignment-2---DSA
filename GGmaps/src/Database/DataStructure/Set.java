@@ -14,6 +14,14 @@ public class Set<E> implements Serializable {
         map = new HashMap<>();
     }
 
+    public List<E> toList() {
+        List<E> list = new List<E>();
+        for (E element : map.getKeys()) {
+            list.add(element);
+        }
+        return list;
+    }
+
     public void add(E element) {
         map.put(element, null);
     }

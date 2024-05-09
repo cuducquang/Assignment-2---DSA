@@ -17,6 +17,14 @@ public class List<T> implements Iterable<T> {
         elements[size++] = element;
     }
 
+    public void set(int index, T value) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
+        elements[index] = value;
+    }
+
+
     @SuppressWarnings("unchecked")
     public T get(int index) {
         if (index < 0 || index >= size) {
